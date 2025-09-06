@@ -96,7 +96,7 @@ screen say(who, what):
 
     window:
         id "window"
-
+        
         if who is not None:
 
             window:
@@ -111,6 +111,61 @@ screen say(who, what):
     ## 为没有空间。
     if not renpy.variant("small"):
         add SideImage() xalign 0.0 yalign 1.0
+
+
+screen video_with_narration:
+    # 视频背景（保持不变）
+    add "video_background":
+        xysize (config.screen_width, config.screen_height)
+
+    # 发光文字（无背景）
+    text current_narration:
+        xpos 0.5 ypos 0.9
+        xanchor 0.5 yanchor 1.0
+        color "#FFFFFF"  # 纯白色文字
+        size 40          # 字号加大（40号）
+        bold True        # 加粗
+        outlines [
+            (4, "#00FFFF", 0, 0),   # 外层：4px青色发光描边（光晕效果）
+            (2, "#000000", 0, 0)    # 内层：2px黑色描边（抗锯齿）
+        ]
+
+screen dynamic_narration():
+    window:
+        style "narration_window"
+        # 关键修改：使用 DynamicText 并绑定重置逻辑
+        text current_narration:
+            id "narration_text"
+            color "#FFFFFF"
+            size 40
+            bold True
+            outlines [ (4, "#000000", 0, 0) ]
+            align (0.5, 0.5)
+            slow_cps 20
+
+
+# # 定义透明风格的旁白角色
+# define narrator = Character(
+#     None, 
+#     window_style="narration_window",
+#     what_style="narration_text",
+#     what_slow_cps=20  # 与角色对话完全相同的逐字速度
+# )
+
+# # 旁白专用样式
+# style narration_window:
+#     xalign 1.0
+#     yalign 1.0
+#     background None  # 完全透明
+#     padding (30, 20)
+
+# style narration_text:
+#     color "#841919"
+#     size 40
+#     bold True
+#     outlines [ (4, "#000000", 0, 0) ]
+#     slow_cps 20  # 确保与角色对话速度一致
+
 
 
 ## 通过 Character 对象使名称框可用于样式化。
@@ -133,6 +188,14 @@ style window:
     ysize gui.textbox_height
 
     background Image("gui/textbox.png", xalign=0.5, yalign=1.0)
+
+# === 专用于动画旁白的透明窗口样式 ===
+style narration_window:
+    xalign 0.5
+    xfill True
+    yalign gui.textbox_yalign
+    ysize gui.textbox_yalign
+    background None # 完全透明背景
 
 style namebox:
     xpos gui.name_xpos
@@ -1597,28 +1660,3 @@ style slider_slider:
     xsize 900
 
 
-# screen video_with_narration:
-#     # 视频背景（保持不变）
-#     add "video_background":
-#         xysize (config.screen_width, config.screen_height)
-
-#     # 发光文字（无背景）
-#     text current_narration:
-#         xpos 0.5 ypos 0.9
-#         xanchor 0.5 yanchor 1.0
-#         color "#FFFFFF"  # 纯白色文字
-#         size 40          # 字号加大（40号）
-#         bold True        # 加粗
-#         outlines [
-#             (4, "#00FFFF", 0, 0),   # 外层：4px青色发光描边（光晕效果）
-#             (2, "#000000", 0, 0)    # 内层：2px黑色描边（抗锯齿）
-#         ]
-
-screen dynamic_narration():
-    text current_narration:
-        xpos 0.5 ypos 0.9
-        xanchor 0.5 yanchor 1.0
-        color"#FFFFFF"
-        size 36
-        bold True
-        outlines [ (2, "#000000", 0, 0) ]

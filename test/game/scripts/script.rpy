@@ -1,12 +1,18 @@
 ﻿# Define characters with color coding
-define irene = Character("Irene", what_size = 75, who_size = 45, color="#ff99cc", image = "irene")    # Pink dialogue
-define seulgi = Character("Seulgi", color="#99ccff", image = "seulgi")  # Blue dialogue
-define wendy = Character("Wendy", color="#ccff99", image = "wendy")    # Green dialogue
+# 约翰·曼尼普尔上校 John Manipur
+define manipur = Character("manipur", what_size = 75, who_size = 45, color="#ff99cc", image = "manipur")    # Pink dialogue
+# 拉杰特·杨·霍夫曼 Rhajeat young Hoffman
+define hoffman = Character("hoffman", color="#99ccff", image = "hoffman")  # Blue dialogue
+# 范德蒙特夫Fond Monteff
+define monteff = Character("monteff", color="#ccff99", image = "monteff")    # Green dialogue
+
 define detective = Character("Detective", color="#ffff99")  # Yellow dialogue
+# 旁白
+define back = Character("旁白", what_prefix='"', what_suffix='"', what_slow_cps=20)
 
 # 定义视频背景（Movie对象会自动适应屏幕）
 image video_background = Movie(
-    play="video/irene.webm",  # 视频路径
+    play="video/manipur.webm",  # 视频路径
     loop=False,  # 不循环播放（根据需求调整）
     size=(1920, 1080)  # 视频原始分辨率（需与实际视频一致）
 )
@@ -15,200 +21,199 @@ image video_background = Movie(
 default narration_queue = []
 default current_narration = ""
 
-label play_animated_narration:
-    play movie video_path
-    show screen dynamic_narration
-    python:
-        while len(narration_queue) > 0:
-            text, duration = narration_queue.pop(0)
-            current_narration = text
-            renpy.pause(duration)
+# label play_animated_narration(video_path):
+#     # 显示视频（Movie 对象会自动播放）
+#     show expression Movie(
+#         play=video_path,
+#         size=(1920, 1080)  # 根据实际分辨率调整
+#     ) as video_player
+    
+#     # 显示旁白
+#     show screen dynamic_narration
+    
+#     python:
+#         # # 方案变更：不再检测视频时长，直接按旁白时间暂停
+#         # total_duration = 0.0
+#         # for text, duration in narration_queue:
+#         #     current_narration = text
+#         #     renpy.pause(duration)
+#         #     total_duration += duration
+        
+#         # # 固定额外暂停（确保视频播完）
+#         # renpy.pause(1.0)  # 默认追加1秒缓冲时间
+#         for text in narration_queue:
+#             current_narration = ""
+#             renpy.pause(0.01)
+#             current_narration = text
+#             # renpy.restart_interaction()
+#             # required_time = len(text)/10 + 0.5
+#             renpy.pause(len(text)/20 + 0.5)
+    
+#     # 清理
+#     hide screen dynamic_narration
+#     hide video_player
+#     return
 
-    hide screen dynamic_narration
-    stop movie
+label play_animated_narration(video_path):
+    # 显示视频
+    show expression Movie(
+        play = video_path,
+        size = (config.screen_width, config.screen_height),
+    ) as video_player
+    
+    # 使用角色对话系统显示旁白
+    python:
+        for text in narration_queue:
+            back(text, interact=False)  # 关键：直接调用角色对话函数
+            renpy.pause(len(text)/20.0 + 5)  # 句间间隔
+    
+    # 清理
+    hide video_player
     return
 
 
 
 
-image side irene:
-    "images/figure/irene.png"
+
+
+image side manipur:
+    "images/figure/manipur.png"
     zoom 0.3
 
-image side seulgi:
-    "images/figure/seulgi.png"
+image side hoffman:
+    "images/figure/hoffman.png"
     zoom 0.3
 
-image side wendy:
-    "images/figure/wendy.png"
+image side monteff:
+    "images/figure/monteff.png"
     zoom 0.3
 
 # Image assets definition (place in game/images/)
-image train: 
+image cover: 
     "images/train.png"  # Main background (东方快车车厢)
     zoom 2.5
 image carriage: 
     "images/carriage.png"
     zoom 3.7
 
+image carriage_dark:
+    "images/carriage_dark.png"
+    zoom 3.7
 
-image irene_idle: 
-    "images/irene_idle.png"
+image map:
+    "images/map.png"
+
+image manipur_idle: 
+    "images/manipur_idle.png"
     zoom 0.2
-image seulgi_idle: 
-    "images/seulgi_idle.png"
+image hoffman_idle: 
+    "images/hoffman_idle.png"
     zoom 0.3
-image wendy_idle: 
-    "images/wendy_idle.png"
+image monteff_idle: 
+    "images/monteff_idle.png"
     zoom 0.4
     
 
 
-# AI model API integration (initialize on game start)
+
+
 init python:
-    import requests  # Install requests via pip first (see note below)
-    import json
-    import os
-    from scripts.memory_manager import load_memory, save_memory
+    from scripts.ai_dialogue import call_ai_model
 
-    MODEL_CONFIGS = {
-        "irene": {"api_url": "https://dashscope.aliyuncs.com/compatible-mode/v1", "model": "qwen-plus", "temperature": 0.5},  
-        "seulgi": {"api_url": "https://dashscope.aliyuncs.com/compatible-mode/v1", "model": "qwen-turbo", "temperature": 0.8},  
-        "wendy": {"api_url": "https://dashscope.aliyuncs.com/compatible-mode/v1", "model": "qwen-turbo", "temperature": 0.6}, 
-    }
-
+    def renpy_profile_loader(name):
+        with renpy.file(f"character_profiles/{name}.txt") as f:
+            return f.read().decode("utf-8").strip()
     
-    interrogated_suspects = set()
+    def interrogate(question, name):
+        return call_ai_model(question, name, renpy_profile_loader)
 
-    # Global variable to track dialogue rounds
-    dialogue_round = 0
-
-    def call_ai_model(question, character_name):
-        """
-        调用指定角色的大模型，自动加载/更新记忆
-        :param character_name: 角色名 ("irene"/"seulgi"/"wendy")
-        """
-        # ==== API Configuration ====
-        # 阿里巴巴通义千问API
-        API_KEY = "sk-c7785f6decc94b28a30ae01c5c65090b"  # Replace with actual API key
-        # API_URL = "https://dashscope.aliyuncs.com/compatible-mode/v1"
-        # MODEL_NAME = "qwen-turbo"  # 模型名称（轻量版，可选qwen-plus/qwen-max）
-
-        # ==== 构建请求参数（严格按官方API格式）====
-        # 1. 构造对话历史（角色设定+玩家问题，符合OpenAI兼容格式）
-        with renpy.file(f"character_profiles/{character_name}.txt") as f:
-            system_prompt = f.read().decode("utf-8").strip()
-        
-        history = load_memory(character_name)
-
-        config = MODEL_CONFIGS[character_name]
-
-        messages = [
-            {"role": "system", "content": system_prompt},  # 角色设定（系统提示）
-            *history,
-            {"role": "user", "content": question}               # 玩家问题
-        ]
-
-        # 2. 完整请求体（参考官方教程的兼容模式格式）
-        payload = {
-            "model": config["model"],                # 必须指定模型名称
-            "messages": messages,               # 对话历史（包含角色设定和问题）
-            "max_tokens": 150,                  # 生成回答的最大长度（约3-5句话）
-            "temperature": config["temperature"]                  # 随机性（0.7适中，符合游戏角色个性）
-        }
-
-        # 3. 请求头（包含API Key认证）
-        headers = {
-            "Authorization": f"Bearer {API_KEY}",  # 固定格式："Bearer " + API Key
-            "Content-Type": "application/json"
-        }
-        
-        # API call with error handling (offline fallback)
-        # ==== 发送请求并处理响应 ====
-        try:
-            # 发送POST请求到官方教程指定的Base URL
-            response = requests.post(
-                url = config["api_url"] + "/chat/completions",  # 兼容模式的对话接口路径
-                headers=headers,
-                data=json.dumps(payload)
-            )
-            response.raise_for_status()  # 检查HTTP错误（如401密钥错误）
-
-            # 解析响应（官方教程兼容OpenAI格式）
-            character_response = response.json()["choices"][0]["message"]["content"].strip()  # 提取回答文本
-
-            # 更新记忆（追加当前问答内容）并保存
-            history.append({"role": "user", "content": question})
-            history.append({"role": "assistant", "content": character_response})
-            save_memory(character_name, history)
-
-            return character_response
-
-        except Exception as e:
-            # 错误处理：返回友好提示（玩家无感知，开发时可打印错误日志）
-            print(f"API调用失败: {str(e)}")  # RenPy控制台可查看错误详情
-            return "你在胡言乱语些什么？"  # 游戏内显示的默认回答
-
-
-
+    # config.preload_videos = True
 
 # Main game flow
 label start:
     scene cover  # Maintain background image p1
     "欢迎本次列车，侦探先生！"
     scene map
-    "昨晚列车上发生了一起凶案，我们初步锁定了三名有嫌疑的乘客"
-    show irene_idle at left
-    show seulgi_idle at center
-    show wendy_idle at right
-    # 嵌入超链接
-    "您可以一个一个审问他们，或者也可以选择使用您超乎常人的直觉{a=jump:accuse_culprit}直接指认凶手{/a}" # a=后面也可以加网址，就像真的超链接那样
-    # 选择审讯对象
-    hide irene_idle
-    hide seulgi_idle
-    hide wendy_idle
+    back "1933年，德国法西斯上台后，对周边国家采取蚕食吞并政策，严重威胁英国、法国、苏联等国家的边防安全。"
+    back "经济和政治局势的动荡导致谋杀率大幅增加，绑架案四处频发。西欧各国对德国采取绥靖政策，牺牲小国家、商人和贫民利益换取并不长久的国家安全。"
+    back "西装革履的英法贵族为保全自身，不断签订各种条约，将周边小国推入法西斯的血盆大口。"
+    back "而沦陷区的国家支离破碎，人民流离失所，难以维生，匪盗猖獗。"
+
+    # $ renpy.start_predict("video/manipur.webm")
+    $ narration_queue = [
+        "1938年1月15日，由苏联莫斯科开往法国南林克港的列车正疾行在波兰平原上。车上载满官员、贵族和刚刚签订完《英苏-法苏合作条约》的外交官们。",
+        "刚处理完苏联的一桩法律案件，疲惫不堪的你乘坐这趟车准备回英国享受假期。",
+        "第三句"
+    ]
+
+    call play_animated_narration("video/manipur.webm")
+
+    scene carriage_dark # 待优化：可以换成多幅动画
+    back "夜间，由于愈发强烈的暴风雪，列车只得临时停车，并熄灭大多数煤气灯以保证仅剩燃料的持续供应。"
+    back "昏暗而逼仄的车厢内，被困的人们焦虑而又恐惧地等待。"
+    back "当车厢中的不安气氛达到顶峰时，第十四与十五节车厢的连接处传来一声尖叫，然后是两三声沉闷的枪响。"
+    back "本就不安的乘客中，尖叫声此起彼伏，惊慌地四散奔逃。"
+
+
+    scene samiur_lying
+    back "当你赶到时，只见到中弹者倒在血泊中，毛发散乱，瞳孔放大，苍白的脸扭曲而惊愕，伸手探去早已没了鼻息。"
+
+    scene suspects_standing
+    back "经过调查，死者名为萨缪尔，是一个臭名昭著的罪犯。由于案件发生突然，车厢狭窄拥挤，你断定凶手仍在现场不远处。"
+    back "通过简单取证与对比，你锁定了邻近3节车厢内的5名嫌疑人，准备进一步进行审问。可直觉告诉你，这件谋杀案的背后根本没有你想的那么简单......."
 
     menu:
-        "Interrogate Irene":
-            jump interrogate_irene
-        "Interrogate Seulgi":
-            jump interrogate_seulgi
-        "Interrogate Wendy":
-            jump interrogate_wendy
+        "查看嫌疑人信息":
+            jump show_suspect_info
+        "开始审讯":
+            menu:
+                "manipur":
+                    jump interrogate_manipur
+                "Hoffman":
+                    jump interrogate_hoffman
+                "monteff":
+                    jump interrogate_monteff
 
 
+    menu:
+        "Interrogate manipur":
+            jump interrogate_manipur
+        "Interrogate hoffman":
+            jump interrogate_hoffman
+        "Interrogate monteff":
+            jump interrogate_monteff
 
 label proceed:
     "请选择下一个审讯的对象"  
     # menu:  
-    #     "Irene" if "irene" not in interrogated_suspects:  
-    #         jump interrogate_irene  
-    #     "Seulgi" if "seulgi" not in interrogated_suspects:  
-    #         jump interrogate_seulgi  
-    #     "Wendy" if "wendy" not in interrogated_suspects:  
-    #         jump interrogate_wendy
+    #     "manipur" if "manipur" not in interrogated_suspects:  
+    #         jump interrogate_manipur  
+    #     "hoffman" if "hoffman" not in interrogated_suspects:  
+    #         jump interrogate_hoffman  
+    #     "monteff" if "monteff" not in interrogated_suspects:  
+    #         jump interrogate_monteff
     menu:
-        "Interrogate Irene":
-            jump interrogate_irene
-        "Interrogate Seulgi":
-            jump interrogate_seulgi
-        "Interrogate Wendy":
-            jump interrogate_wendy
+        "Interrogate manipur":
+            jump interrogate_manipur
+        "Interrogate hoffman":
+            jump interrogate_hoffman
+        "Interrogate monteff":
+            jump interrogate_monteff
 
 
 
-# ==== Branch 1: Interrogate Irene (Play animation then return) ====
-label interrogate_irene:
+# ==== Branch 1: Interrogate manipur (Play animation then return) ====
+label interrogate_manipur:
     
-    # show irene_idle at truecenter with dissolve
-    irene "（表情紧张）侦探先生，我什么都不知道..."
+    # show manipur_idle at truecenter with dissolve
+    manipur "（表情紧张）侦探先生，我什么都不知道..."
     detective "Where were you last night?"
-    "（Playing Irene's alibi animation...）"
+    "（Playing manipur's alibi animation...）"
     
     # Play animation (place in game/video/)
     # play music "audio/love.mp3"
-    # hide irene_idle with dissolve
-    # $ renpy.movie_cutscene("video/irene.webm") 
+    # hide manipur_idle with dissolve
+    # $ renpy.movie_cutscene("video/manipur.webm") 
     show screen video_with_narration
     
     # 第1句旁白（0秒时显示）
@@ -234,30 +239,32 @@ label interrogate_irene:
             jump accuse_culprit  # 直接进入指认环节  
 
 
-# ==== Branch 2: Interrogate Seulgi (5 rounds of AI dialogue) ====
-label interrogate_seulgi:
-    seulgi "（双手交叉）侦探先生，您随便问，但我只能回答您五个问题"
+# ==== Branch 2: Interrogate hoffman (5 rounds of AI dialogue) ====
+label interrogate_hoffman:
+    scene hoffman_sitting
+
+    hoffman "（双手交叉）侦探先生，您随便问，但我只能回答您五个问题"
     
     # 5-round dialogue loop
     python: 
         # 在Python块内访问RenPy变量需用renpy.store  
         for round_num in range(1, 6):  
-            renpy.say(detective, f"第{round_num}/5轮：你要问Seulgi什么？")
+            renpy.say(detective, f"第{round_num}/5轮：你要问hoffman什么？")
 
             question = renpy.input(f"问题 {round_num}: ", length = 100).strip()
             if not question:
                 renpy.say(detective, "请输入有效问题")
                 continue
-            
-            response = call_ai_model(question, "seulgi")
-            renpy.say(seulgi, response)
+
+            response = interrogate(question, "hoffman")
+            renpy.say(hoffman, response)
             renpy.pause(0.3)
     
     # End interrogation
-    seulgi "（站起身）好了，侦探先生，我说过我只会回答你5个问题，我现在要回去解解宿醉"
-    hide seulgi_idle with dissolve
+    hoffman "（站起身）好了，侦探先生，我对这些感到厌烦了，我相信我们都需要休息一下"
+    hide hoffman_idle with dissolve
     detective "审讯结束"
-    $ interrogated_suspects.add("seulgi")
+    $ interrogated_suspects.add("hoffman")
     menu:  
         "继续审讯":  
             jump proceed  # 返回嫌疑人选择界面  
@@ -265,16 +272,16 @@ label interrogate_seulgi:
             jump accuse_culprit  # 直接进入指认环节  
 
 
-# ==== Branch 3: Interrogate Wendy (5 rounds of AI dialogue) ====
-label interrogate_wendy:  
+# ==== Branch 3: Interrogate monteff (5 rounds of AI dialogue) ====
+label interrogate_monteff:  
     $ dialogue_round = 0  # 重置对话轮次（RenPy脚本变量）  
-    # hide irene_idle seulgi_idle  
-    # show wendy_idle at truecenter with dissolve  
-    wendy "（微笑）侦探先生，您好！我不打算隐瞒什么，昨天晚上我的确经过了车厢，但我什么都没听到看到"  
+    # hide manipur_idle hoffman_idle  
+    # show monteff_idle at truecenter with dissolve  
+    monteff "（微笑）侦探先生，您好！我不打算隐瞒什么，昨天晚上我的确经过了车厢，但我什么都没听到看到"  
     
-    # Wendy的角色设定（传递给AI模型）  
+    # monteff的角色设定（传递给AI模型）  
     $ char_profile = """  
-    You are Wendy, a passenger on the Orient Express, NOT the murderer.  
+    You are monteff, a passenger on the Orient Express, NOT the murderer.  
     Alibi: Passed victim's carriage at 10 PM, heard a door slam but saw no one.  
     """  
 
@@ -284,23 +291,23 @@ label interrogate_wendy:
         while renpy.store.dialogue_round < 5:  
             renpy.store.dialogue_round += 1  
             # 1. 显示侦探台词（调用RenPy的say函数）  
-            renpy.say(renpy.store.detective, f"Round {renpy.store.dialogue_round}/5: What do you ask Wendy?")  
+            renpy.say(renpy.store.detective, f"Round {renpy.store.dialogue_round}/5: What do you ask monteff?")  
             # 2. 获取玩家输入（调用RenPy的input函数）  
             player_question = renpy.input(f"Question {renpy.store.dialogue_round}: ", length=100).strip()  
             if not player_question:  # 若输入为空  
                 renpy.say(renpy.store.detective, "Please ask a valid question!")  
                 continue  # ✅ 在Python块内可用continue  
             # 3. 调用AI模型生成回答  
-            wendy_response = renpy.store.call_ai_model(player_question, renpy.store.char_profile)  
-            # 4. 显示Wendy的AI回答  
-            renpy.say(renpy.store.wendy, wendy_response)  
+            monteff_response = renpy.store.call_ai_model(player_question, renpy.store.char_profile)  
+            # 4. 显示monteff的AI回答  
+            renpy.say(renpy.store.monteff, monteff_response)  
             renpy.pause(0.5)  # 暂停0.5秒  
 
     # 审问结束（回到RenPy脚本）  
-    hide wendy_idle with dissolve 
-    wendy "(站起来) 侦探先生，我想我已经说得够清楚了，我什么都没有做！您无休止的质疑使我厌烦，我要回去休息一下" 
+    hide monteff_idle with dissolve 
+    monteff "(站起来) 侦探先生，我想我已经说得够清楚了，我什么都没有做！您无休止的质疑使我厌烦，我要回去休息一下" 
     detective "审讯结束" 
-    $ interrogated_suspects.add("wendy") 
+    $ interrogated_suspects.add("monteff") 
     menu:  
         "继续审讯":  
             jump proceed  # 返回嫌疑人选择界面  
@@ -313,20 +320,20 @@ label accuse_culprit:
     scene carriage
     "All suspects interrogated. Now accuse the murderer!"
     menu:
-        "Accuse Irene":
+        "Accuse manipur":
             jump ending_wrong
-        "Accuse Seulgi":
+        "Accuse hoffman":
             jump ending_correct
-        "Accuse Wendy":
+        "Accuse monteff":
             jump ending_wrong
 
 label ending_correct:
-    detective "Seulgi, your military background and alibi contradictions give you away!"
-    seulgi "（脸色惨白）Yes... I did it! He ruined my life!"  # ✅ 正确：使用定义好的seulgi变量  
+    detective "hoffman, your military background and alibi contradictions give you away!"
+    hoffman "（脸色惨白）Yes... I did it! He ruined my life!"  # ✅ 正确：使用定义好的hoffman变量  
     "Case solved! You caught the murderer!"
     return
 
 label ending_wrong:
-    detective "Wrong accusation! Seulgi has escaped during the chaos..."
+    detective "Wrong accusation! hoffman has escaped during the chaos..."
     "Game Over. Better luck next time!"
     return
