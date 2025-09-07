@@ -16,8 +16,7 @@ $ interrogated_suspects = []
 # 功能：播放动画时渐次展示旁白
 default narration_queue = []
 default current_narration = ""
-
-label play_animated_narration(video_path):
+label play_animated_narration(video_path, character):
     # 显示视频
     show expression Movie(
         play = video_path,
@@ -26,25 +25,12 @@ label play_animated_narration(video_path):
     # 使用角色对话系统显示旁白
     python:
         for text in narration_queue:
-            back(text, interact=False)
+            character(text, interact=False)
             renpy.pause(len(text)/20.0 + 5)  # 句间间隔5秒
     # 清理
     hide video_player
     return
 
-
-
-# image side manipur:
-#     "images/figure/manipur.png"
-#     zoom 0.3
-
-# image side hoffman:
-#     "images/figure/hoffman.png"
-#     zoom 0.3
-
-# image side monteff:
-#     "images/figure/monteff.png"
-#     zoom 0.3
 
 
 image cover: 
@@ -76,20 +62,30 @@ image monteff_idle:
 
 
 init python:
-    from scripts.ai_dialogue import call_ai_model
+    from scripts.ai_dialogue import call_ai_model, extract_emotion
 
     def renpy_profile_loader(name):
         with renpy.file(f"character_profiles/{name}.txt") as f:
             return f.read().decode("utf-8").strip()
     
     def interrogate(question, name):
-        return call_ai_model(question, name, renpy_profile_loader)
+        raw_response = call_ai_model(question, name, renpy_profile_loader)
+        return extract_emotion(raw_response)
 
-    # config.preload_videos = True
+    def character_saying(video_path, character):
+        renpy.show("video_player", 
+            at_list=[Transform(size=(config.screen_width, config.screen_height))],
+            what=Movie(play=video_path)
+        )
+        for text in narration_queue:
+            character(text, interact=False)
+            renpy.pause(len(text)/20.0 + 5)
+        renpy.hide("video_player")
+
 
 # Main game flow
 label start:
-    scene cover  # Maintain background image p1
+    scene cover
     "欢迎本次列车，侦探先生！"
     scene map
     back "1933年，德国法西斯上台后，对周边国家采取蚕食吞并政策，严重威胁英国、法国、苏联等国家的边防安全。"
@@ -97,14 +93,13 @@ label start:
     back "西装革履的英法贵族为保全自身，不断签订各种条约，将周边小国推入法西斯的血盆大口。"
     back "而沦陷区的国家支离破碎，人民流离失所，难以维生，匪盗猖獗。"
 
-    # $ renpy.start_predict("video/manipur.webm")
+
     $ narration_queue = [
         "1938年1月15日，由苏联莫斯科开往法国南林克港的列车正疾行在波兰平原上。车上载满官员、贵族和刚刚签订完《英苏-法苏合作条约》的外交官们。",
         "刚处理完苏联的一桩法律案件，疲惫不堪的你乘坐这趟车准备回英国享受假期。",
         "第三句"
     ]
-
-    call play_animated_narration("video/manipur.webm")
+    call play_animated_narration("video/manipur.webm", back)
 
     scene carriage_dark # 待优化：可以换成多幅动画
     back "夜间，由于愈发强烈的暴风雪，列车只得临时停车，并熄灭大多数煤气灯以保证仅剩燃料的持续供应。"
@@ -171,22 +166,29 @@ label interrogate_hoffman:
     
     # 5-round dialogue loop
     python: 
-        # 在Python块内访问RenPy变量需用renpy.store  
+        hoffman_states = {
+                "平静": "video/hoffman_idle.webm",
+                "谨慎": "video/hoffman_serious.webm",
+                "慌张": "video/hoffman_nervous.webm",
+                "愤怒": "video/hoffman_angry.webm"
+            }
+
         for round_num in range(1, 6):  
             renpy.say(detective, f"第{round_num}/5轮：你要问hoffman什么？")
-
             question = renpy.input(f"问题 {round_num}: ", length = 100).strip()
             if not question:
                 renpy.say(detective, "请输入有效问题")
                 continue
 
-            response = interrogate(question, "hoffman")
-            renpy.say(hoffman, response)
+            # 角色一边做出回答，一边播放情绪对应的动画
+            current_emotion, clean_response = interrogate(question, "hoffman")
+            narration_queue = [clean_response]
+            character_saying(hoffman_states[current_emotion], hoffman)
             renpy.pause(0.3)
     
     # End interrogation
     hoffman "（站起身）好了，侦探先生，我对这些感到厌烦了，我相信我们都需要休息一下"
-    # hide hoffman_idle with dissolve
+
     detective "审讯结束"
     $ interrogated_suspects.add("hoffman")
     menu:  
@@ -203,29 +205,29 @@ label interrogate_monteff:
     # show monteff_idle at truecenter with dissolve  
     monteff "（微笑）侦探先生，您好！我不打算隐瞒什么，昨天晚上我的确经过了车厢，但我什么都没听到看到"  
     
-    # monteff的角色设定（传递给AI模型）  
+    
     $ char_profile = """  
     You are monteff, a passenger on the Orient Express, NOT the murderer.  
     Alibi: Passed victim's carriage at 10 PM, heard a door slam but saw no one.  
     """  
 
-    # ==== 关键：用python:块包裹循环逻辑 ====  
+     
     python:  
-        # 在Python块内访问RenPy变量需用renpy.store  
+          
         while renpy.store.dialogue_round < 5:  
             renpy.store.dialogue_round += 1  
-            # 1. 显示侦探台词（调用RenPy的say函数）  
+              
             renpy.say(renpy.store.detective, f"Round {renpy.store.dialogue_round}/5: What do you ask monteff?")  
-            # 2. 获取玩家输入（调用RenPy的input函数）  
+              
             player_question = renpy.input(f"Question {renpy.store.dialogue_round}: ", length=100).strip()  
-            if not player_question:  # 若输入为空  
+            if not player_question:    
                 renpy.say(renpy.store.detective, "Please ask a valid question!")  
-                continue  # ✅ 在Python块内可用continue  
-            # 3. 调用AI模型生成回答  
+                continue   
+             
             monteff_response = renpy.store.call_ai_model(player_question, renpy.store.char_profile)  
-            # 4. 显示monteff的AI回答  
+             
             renpy.say(renpy.store.monteff, monteff_response)  
-            renpy.pause(0.5)  # 暂停0.5秒  
+            renpy.pause(0.5)   
 
     # 审问结束（回到RenPy脚本）  
     hide monteff_idle with dissolve 

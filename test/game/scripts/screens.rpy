@@ -144,30 +144,6 @@ screen dynamic_narration():
             slow_cps 20
 
 
-# # 定义透明风格的旁白角色
-# define narrator = Character(
-#     None, 
-#     window_style="narration_window",
-#     what_style="narration_text",
-#     what_slow_cps=20  # 与角色对话完全相同的逐字速度
-# )
-
-# # 旁白专用样式
-# style narration_window:
-#     xalign 1.0
-#     yalign 1.0
-#     background None  # 完全透明
-#     padding (30, 20)
-
-# style narration_text:
-#     color "#841919"
-#     size 40
-#     bold True
-#     outlines [ (4, "#000000", 0, 0) ]
-#     slow_cps 20  # 确保与角色对话速度一致
-
-
-
 ## 通过 Character 对象使名称框可用于样式化。
 init python:
     config.character_id_prefixes.append('namebox')

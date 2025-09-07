@@ -82,3 +82,16 @@ def call_ai_model(question, character_name, profile_loader = None):
         # 错误处理：返回友好提示（玩家无感知，开发时可打印错误日志）
         print(f"API调用失败: {str(e)}")  # RenPy控制台可查看错误详情
         return "你在胡言乱语些什么？"  # 游戏内显示的默认回答
+
+
+def extract_emotion(response):
+    """
+    从回答中提取情绪标签并清理文本
+    返回: (情绪状态, 纯净文本)
+    """
+    import re
+    # 匹配 *情绪* 开头模式
+    emotion_match = re.match(r'^\*(.*?)\*\s*(.*)', response, re.DOTALL)
+    if emotion_match:
+        return emotion_match.group(1), emotion_match.group(2).strip()
+    return "平静", response  # 默认情绪
