@@ -1,58 +1,21 @@
-﻿# Define characters with color coding
+﻿##### 角色
 # 约翰·曼尼普尔上校 John Manipur
-define manipur = Character("manipur", what_size = 75, who_size = 45, color="#ff99cc", image = "manipur")    # Pink dialogue
+define manipur = Character("约翰·曼尼普尔上校", what_size = 75, who_size = 45, color="#ff99cc")    # Pink dialogue
 # 拉杰特·杨·霍夫曼 Rhajeat young Hoffman
-define hoffman = Character("hoffman", color="#99ccff", image = "hoffman")  # Blue dialogue
+define hoffman = Character("拉杰特·杨·霍夫曼", color="#99ccff", image = "hoffman")  # Blue dialogue
 # 范德蒙特夫Fond Monteff
-define monteff = Character("monteff", color="#ccff99", image = "monteff")    # Green dialogue
-
-define detective = Character("Detective", color="#ffff99")  # Yellow dialogue
+define monteff = Character("范德蒙特夫", color="#ccff99", image = "monteff")    # Green dialogue
+# 卡尔加利·海姆 Calgary Ham
+define detective = Character("卡尔加利·海姆", color="#ffff99")  # Yellow dialogue
 # 旁白
 define back = Character("旁白", what_prefix='"', what_suffix='"', what_slow_cps=20)
 
-# 定义视频背景（Movie对象会自动适应屏幕）
-image video_background = Movie(
-    play="video/manipur.webm",  # 视频路径
-    loop=False,  # 不循环播放（根据需求调整）
-    size=(1920, 1080)  # 视频原始分辨率（需与实际视频一致）
-)
+# 已审讯过的嫌疑人
+$ interrogated_suspects = []
 
-# 旁白变量
+# 功能：播放动画时渐次展示旁白
 default narration_queue = []
 default current_narration = ""
-
-# label play_animated_narration(video_path):
-#     # 显示视频（Movie 对象会自动播放）
-#     show expression Movie(
-#         play=video_path,
-#         size=(1920, 1080)  # 根据实际分辨率调整
-#     ) as video_player
-    
-#     # 显示旁白
-#     show screen dynamic_narration
-    
-#     python:
-#         # # 方案变更：不再检测视频时长，直接按旁白时间暂停
-#         # total_duration = 0.0
-#         # for text, duration in narration_queue:
-#         #     current_narration = text
-#         #     renpy.pause(duration)
-#         #     total_duration += duration
-        
-#         # # 固定额外暂停（确保视频播完）
-#         # renpy.pause(1.0)  # 默认追加1秒缓冲时间
-#         for text in narration_queue:
-#             current_narration = ""
-#             renpy.pause(0.01)
-#             current_narration = text
-#             # renpy.restart_interaction()
-#             # required_time = len(text)/10 + 0.5
-#             renpy.pause(len(text)/20 + 0.5)
-    
-#     # 清理
-#     hide screen dynamic_narration
-#     hide video_player
-#     return
 
 label play_animated_narration(video_path):
     # 显示视频
@@ -60,35 +23,30 @@ label play_animated_narration(video_path):
         play = video_path,
         size = (config.screen_width, config.screen_height),
     ) as video_player
-    
     # 使用角色对话系统显示旁白
     python:
         for text in narration_queue:
-            back(text, interact=False)  # 关键：直接调用角色对话函数
-            renpy.pause(len(text)/20.0 + 5)  # 句间间隔
-    
+            back(text, interact=False)
+            renpy.pause(len(text)/20.0 + 5)  # 句间间隔5秒
     # 清理
     hide video_player
     return
 
 
 
+# image side manipur:
+#     "images/figure/manipur.png"
+#     zoom 0.3
+
+# image side hoffman:
+#     "images/figure/hoffman.png"
+#     zoom 0.3
+
+# image side monteff:
+#     "images/figure/monteff.png"
+#     zoom 0.3
 
 
-
-image side manipur:
-    "images/figure/manipur.png"
-    zoom 0.3
-
-image side hoffman:
-    "images/figure/hoffman.png"
-    zoom 0.3
-
-image side monteff:
-    "images/figure/monteff.png"
-    zoom 0.3
-
-# Image assets definition (place in game/images/)
 image cover: 
     "images/train.png"  # Main background (东方快车车厢)
     zoom 2.5
@@ -185,63 +143,29 @@ label start:
 
 label proceed:
     "请选择下一个审讯的对象"  
-    # menu:  
-    #     "manipur" if "manipur" not in interrogated_suspects:  
-    #         jump interrogate_manipur  
-    #     "hoffman" if "hoffman" not in interrogated_suspects:  
-    #         jump interrogate_hoffman  
-    #     "monteff" if "monteff" not in interrogated_suspects:  
-    #         jump interrogate_monteff
-    menu:
-        "Interrogate manipur":
-            jump interrogate_manipur
-        "Interrogate hoffman":
-            jump interrogate_hoffman
-        "Interrogate monteff":
+    menu:  
+        "manipur" if "manipur" not in interrogated_suspects:  
+            jump interrogate_manipur  
+        "hoffman" if "hoffman" not in interrogated_suspects:  
+            jump interrogate_hoffman  
+        "monteff" if "monteff" not in interrogated_suspects:  
             jump interrogate_monteff
 
 
 
-# ==== Branch 1: Interrogate manipur (Play animation then return) ====
+# ==== 审讯曼尼普尔 ====
 label interrogate_manipur:
     
-    # show manipur_idle at truecenter with dissolve
+    show manipur_idle
     manipur "（表情紧张）侦探先生，我什么都不知道..."
     detective "Where were you last night?"
-    "（Playing manipur's alibi animation...）"
-    
-    # Play animation (place in game/video/)
-    # play music "audio/love.mp3"
-    # hide manipur_idle with dissolve
-    # $ renpy.movie_cutscene("video/manipur.webm") 
-    show screen video_with_narration
-    
-    # 第1句旁白（0秒时显示）
-    $ current_narration = "旁白1：故事发生在1934年的东方快车..."
-    pause 3.0  # 持续3秒
-    
-    # 第2句旁白（3秒时切换）
-    $ current_narration = "旁白2：车上载着来自世界各地的乘客..."
-    pause 4.5  # 持续4.5秒
-    
-    # 第3句旁白（7.5秒时切换）
-    $ current_narration = "旁白3：他们之中，隐藏着一个凶手..."
-    pause 3.0  # 持续3秒
-    
-    # 结束：隐藏屏幕
-    hide screen video_with_narration
-
-    pause 5
-    menu: 
-        "继续审讯":  
-            jump proceed  # 返回嫌疑人选择界面  
-        "指认凶手":  
-            jump accuse_culprit  # 直接进入指认环节  
+    # ...
+    # ... 
 
 
-# ==== Branch 2: Interrogate hoffman (5 rounds of AI dialogue) ====
+# ==== 审讯霍夫曼 ====
 label interrogate_hoffman:
-    scene hoffman_sitting
+    scene hoffman_idle
 
     hoffman "（双手交叉）侦探先生，您随便问，但我只能回答您五个问题"
     
@@ -262,7 +186,7 @@ label interrogate_hoffman:
     
     # End interrogation
     hoffman "（站起身）好了，侦探先生，我对这些感到厌烦了，我相信我们都需要休息一下"
-    hide hoffman_idle with dissolve
+    # hide hoffman_idle with dissolve
     detective "审讯结束"
     $ interrogated_suspects.add("hoffman")
     menu:  
