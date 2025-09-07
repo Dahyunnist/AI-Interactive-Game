@@ -114,7 +114,8 @@ define config.window_show_transition = Dissolve(.2)
 define config.window_hide_transition = Dissolve(.2)
 
 # === 设置禁止滚轮回滚 ===
-define config.rollback_enabled = False
+# 暂时启用
+define config.rollback_enabled = True
 
 
 ## 默认设置 ########################################################################
@@ -122,7 +123,7 @@ define config.rollback_enabled = False
 ## 控制默认的文字显示速度。默认的 0 为瞬间，而其他数字则是每秒显示出的字符数。
 
 # === 设置文字渐次呈现 ===
-default preferences.text_cps = 20 
+default preferences.text_cps = 60
 
 # === 设置语音播放时背景音乐自动调低音量 ===
 default preferences.emphasize_audio = True
