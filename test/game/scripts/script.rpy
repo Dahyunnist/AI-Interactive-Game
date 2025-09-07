@@ -16,6 +16,8 @@ $ interrogated_suspects = []
 # 功能：播放动画时渐次展示旁白
 default narration_queue = []
 default current_narration = ""
+
+# 使用label的形式定义动画旁白播放函数，通过call调用
 label play_animated_narration(video_path, character):
     # 显示视频
     show expression Movie(
@@ -72,6 +74,7 @@ init python:
         raw_response = call_ai_model(question, name, renpy_profile_loader)
         return extract_emotion(raw_response)
 
+    # 使用函数的形式实现动画+旁白，功能与之前的play_animated_narration相同
     def character_saying(video_path, character):
         renpy.show("video_player", 
             at_list=[Transform(size=(config.screen_width, config.screen_height))],
@@ -99,7 +102,10 @@ label start:
         "刚处理完苏联的一桩法律案件，疲惫不堪的你乘坐这趟车准备回英国享受假期。",
         "第三句"
     ]
+
     call play_animated_narration("video/manipur.webm", back)
+    # python:
+    #     character_saying("video/train_running.webm", back)
 
     scene carriage_dark # 待优化：可以换成多幅动画
     back "夜间，由于愈发强烈的暴风雪，列车只得临时停车，并熄灭大多数煤气灯以保证仅剩燃料的持续供应。"
@@ -186,10 +192,18 @@ label interrogate_hoffman:
             character_saying(hoffman_states[current_emotion], hoffman)
             renpy.pause(0.3)
     
-    # End interrogation
-    hoffman "（站起身）好了，侦探先生，我对这些感到厌烦了，我相信我们都需要休息一下"
+    # 结束审讯
+    $ narration_queue = [
+        "好了，侦探先生，我对这些感到厌烦了，我相信我们都需要休息一下"
+    ]
+    python:
+        character_saying("video/hoffman_standing.webm", hoffman)
+    
+    # 霍夫曼离开
+    pause(1.5)
+    $ renpy.movie_cutscene("video/hoffman_leaving.webm") 
 
-    detective "审讯结束"
+    back "审讯结束"
     $ interrogated_suspects.add("hoffman")
     menu:  
         "继续审讯":  
