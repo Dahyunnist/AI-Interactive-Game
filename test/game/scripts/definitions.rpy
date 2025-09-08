@@ -31,7 +31,9 @@ init python:
 
 init:
     # 角色定义
-    image cover_image = Solid("#2c3e50")
+    image cover_image:
+        "cover.png"
+        size(1920, 1080)
     image europe_map:
         "map.png"
         size(1920, 1080)
@@ -45,7 +47,9 @@ init:
         "empty_room.png"
         size(1920, 1080)
     image interrogation_room = Solid("#ecf0f1")
-    image victim_blood = Solid("#c0392b")
+    image victim_blood:
+        "victim_blood.png"
+        size(1920, 1080)
     image suspects_lineup = Solid("#212128")
 
     image hoffman:

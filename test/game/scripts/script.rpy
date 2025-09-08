@@ -1,8 +1,8 @@
 ﻿label start:
     scene cover_image with fade
-    show text "{size=150}伊维利亚列车大劫案{/size}" at truecenter with dissolve
+    # show text "{size=150}伊维利亚列车大劫案{/size}" at truecenter with dissolve
     pause
-    hide text with dissolve
+    # hide text with dissolve
 
     # 显示欧洲形势地图和旁白
     scene europe_map with fade
@@ -33,7 +33,7 @@
     # 显示死者图片和旁白
     scene victim_blood with fade
     "当你赶到时，只见到中弹者倒在血泊中，毛发散乱，瞳孔放大，苍白的脸扭曲而惊愕，伸手探去早已没了鼻息。"
-
+    pause 2.0
     scene suspects_lineup
     "经过调查，死者名为萨缪尔，是一个臭名昭著的罪犯。由于案件发生突然，车厢狭窄拥挤，你断定凶手仍在现场不远处。"
     "通过简单取证与对比，你锁定了邻近3节车厢内的5名嫌疑人，准备进一步进行审问。可直觉告诉你，这件谋杀案的背后根本没有你想的那么简单......."
@@ -109,12 +109,12 @@ label interrogate_hoffman:
     
     # 5-round dialogue loop
     python: 
-        # hoffman_states = {
-        #         "平静": "video/hoffman_idle.webm",
-        #         "谨慎": "video/hoffman_serious.webm",
-        #         "慌张": "video/hoffman_nervous.webm",
-        #         "愤怒": "video/hoffman_angry.webm"
-        #     }
+        hoffman_states = {
+                "平静": "video/hoffman_idle.webm",
+                "谨慎": "video/hoffman_serious.webm",
+                "慌张": "video/hoffman_nervous.webm",
+                "愤怒": "video/hoffman_angry.webm"
+            }
         round_num = 0
         while round_num < 5:  
             renpy.say(calgary, f"第{round_num+1}/5轮：你要问hoffman什么？")
@@ -127,21 +127,21 @@ label interrogate_hoffman:
             current_emotion, clean_response = interrogate(question, "hoffman")
             renpy.say(hoffman, clean_response)
             round_num += 1
-            # narration_queue = [clean_response]
-            # character_saying(hoffman_states[current_emotion], hoffman)
-            # renpy.pause(0.3)
+            narration_queue = [clean_response]
+            character_saying(hoffman_states[current_emotion], hoffman)
+            renpy.pause(0.3)
     
-    # 结束审讯
-    # $ narration_queue = [
-    #     "好了，侦探先生，我对这些感到厌烦了，我相信我们都需要休息一下"
-    # ]
-    # python:
-    #     character_saying("video/hoffman_standing.webm", hoffman)
+    "结束审讯"
+    $ narration_queue = [
+        "好了，侦探先生，我对这些感到厌烦了，我相信我们都需要休息一下"
+    ]
+    python:
+        character_saying("video/hoffman_standing.webm", hoffman)
     hoffman "好了，侦探先生，我对这些感到厌烦了，我相信我们都需要休息一下"
     
     # 霍夫曼离开
-    # pause(1.5)
-    # $ renpy.movie_cutscene("video/hoffman_leaving.webm") 
+    pause(1.5)
+    $ renpy.movie_cutscene("video/hoffman_leaving.webm") 
     show hoffman:
         easeout 1.0 xoffset 2000
     with dissolve
