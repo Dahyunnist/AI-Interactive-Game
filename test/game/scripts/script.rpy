@@ -14,7 +14,7 @@
 
     # 显示列车视频和旁白
     scene black
-    show expression Movie(play="video/train.webm", loop=True, size=(1920, 1080)) as movie
+    show expression Movie(play="video/train_running.webm", loop=True, size=(1920, 1080)) as movie
     with fade
 
     "1938年1月15日，由苏联莫斯科开往法国南林克港的列车正疾行在波兰平原上。车上载满官员、贵族和刚刚签订完《英苏-法苏合作条约》的外交官们。"
