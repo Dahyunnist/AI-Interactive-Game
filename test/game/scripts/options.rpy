@@ -11,14 +11,13 @@
 ##
 ## 带有 _() 的字符串表示其可被翻译。
 
-define config.name = _("test")
+define config.name = _("伊维利亚列车大劫案")
 
 # # === 设置字体 ===
 # # 全局字体设置（使用系统默认字体，避免依赖外部文件）  
 # define config.default_font = ["sans-serif"]  # "sans-serif"是系统默认无衬线字体（Windows/Mac/Linux通用）  
 # define config.interface_font = "sans-serif"   # 界面字体（菜单/按钮等）  
-# define config.text_font = "sans-serif"        # 对话文本字体  
-
+# define config.text_font = "sans-serif"        # 对话文本字体
 
 ## 决定上面给出的标题是否显示在标题界面屏幕。设置为 False 来隐藏标题。
 

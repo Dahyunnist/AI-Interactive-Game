@@ -2,9 +2,6 @@ init python:
     import random
     from scripts.ai_dialogue import call_ai_model, extract_emotion
 
-    # 游戏配置
-    config.name = _("伊维利亚列车大劫案")
-    config.version = "1.0"
     # 旁白样式
     style.narrator_style = Style(style.default)
     style.narrator_style.size = 28
@@ -29,8 +26,14 @@ init python:
             renpy.pause(len(text)/20.0 + 5)
         renpy.hide("video_player")
 
+    interrogated_suspects = set()
+    monteff_asked = 0
+    hoffman_asked = 0
+    kremtanivsky_asked = 0
+    john_asked = 0
+    sok_asked = 0
+
 init:
-    # 角色定义
     image cover_image:
         "cover.png"
         size(1920, 1080)
@@ -51,14 +54,17 @@ init:
         "victim_blood.png"
         size(1920, 1080)
     image suspects_lineup = Solid("#212128")
+    image finish:
+        "finish.jpeg"
+        size(1920, 1080)
 
     image hoffman:
         "Rhajeat_Young_Hoffman.png"
-        zoom(0.60)
+        zoom(0.65)
     image calgary:
         "Calgary_Ham.png"
         zoom(0.75)
-    image fond:
+    image monteff:
         "Fond_Monteff.png"
         zoom(0.75)
     image john:
@@ -73,11 +79,11 @@ init:
 
     image side hoffman:
         "Rhajeat_Young_Hoffman_head.png"
-        zoom(0.25)
+        zoom(0.3)
     image side calgary:
         "Calgary_Ham_head.png"
         zoom(0.5)
-    image side fond:
+    image side monteff:
         "Fond_Monteff_head.png"
         zoom(0.25)
     image side john:
@@ -88,11 +94,31 @@ init:
         zoom(0.25)
     image side sok:
         "Sok_Tor_Hof_head.png"
-        zoom(0.25)
+        zoom(0.35)
 
-    define hoffman = Character("hoffman", image = "hoffman")
-    define calgary = Character("calgary", image = "calgary")
-    define fond = Character("fond", image = "fond")
-    define john = Character("john", image = "john")
-    define kremtanivsky = Character("kremtanivsky", image = "kremtanivsky")
-    define sok = Character("sok", image = "sok")
+    define hoffman = Character("Hoffman", image = "hoffman")
+    define calgary = Character("Calgary", image = "calgary")
+    define monteff = Character("Monteff", image = "fond")
+    define john = Character("John", image = "john")
+    define kremtanivsky = Character("Kremtanivsky", image = "kremtanivsky")
+    define sok = Character("Sok", image = "sok")
+
+    # 功能：播放动画时渐次展示旁白
+    default narration_queue = []
+    default current_narration = ""
+
+    # # 使用label的形式定义动画旁白播放函数，通过call调用
+    # label play_animated_narration(video_path, character):
+    #     # 显示视频
+    #     show expression Movie(
+    #         play = video_path,
+    #         size = (config.screen_width, config.screen_height),
+    #     ) as video_player
+    #     # 使用角色对话系统显示旁白
+    #     python:
+    #         for text in narration_queue:
+    #             character(text, interact=False)
+    #             renpy.pause(len(text)/20.0 + 5)  # 句间间隔5秒
+    #     # 清理
+    #     hide video_player
+    #     return

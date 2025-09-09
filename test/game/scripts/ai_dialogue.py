@@ -5,13 +5,12 @@ import os
 from scripts.memory_manager import load_memory, save_memory
 
 MODEL_CONFIGS = {
-    "manipur": {"api_url": "https://dashscope.aliyuncs.com/compatible-mode/v1", "model": "qwen-plus", "temperature": 0.5},  
-    "hoffman": {"api_url": "https://dashscope.aliyuncs.com/compatible-mode/v1", "model": "qwen-turbo", "temperature": 0.8},  
-    "monteff": {"api_url": "https://dashscope.aliyuncs.com/compatible-mode/v1", "model": "qwen-turbo", "temperature": 0.6}, 
+    "monteff": {"api_url": "https://dashscope.aliyuncs.com/compatible-mode/v1", "model": "qwen-turbo", "temperature": 0.6},
+    "hoffman": {"api_url": "https://dashscope.aliyuncs.com/compatible-mode/v1", "model": "qwen-turbo", "temperature": 0.8}, 
+    "kremtanivsky": {"api_url": "https://dashscope.aliyuncs.com/compatible-mode/v1", "model": "qwen-plus", "temperature": 0.5},  
+    "john": {"api_url": "https://dashscope.aliyuncs.com/compatible-mode/v1", "model": "qwen-turbo", "temperature": 0.7}, 
+    "sok": {"api_url": "https://dashscope.aliyuncs.com/compatible-mode/v1", "model": "qwen-turbo", "temperature": 0.5}, 
 }
-
-
-interrogated_suspects = set()
 
 # Global variable to track dialogue rounds
 dialogue_round = 0
@@ -48,7 +47,7 @@ def call_ai_model(question, character_name, profile_loader = None):
         "model": config["model"],                # 必须指定模型名称
         "messages": messages,               # 对话历史（包含角色设定和问题）
         "max_tokens": 150,                  # 生成回答的最大长度（约3-5句话）
-        "temperature": config["temperature"]                  # 随机性（0.7适中，符合游戏角色个性）
+        "temperature": config["temperature"]   # 随机性（0.7适中，符合游戏角色个性）
     }
 
     # 3. 请求头（包含API Key认证）
@@ -95,3 +94,4 @@ def extract_emotion(response):
     if emotion_match:
         return emotion_match.group(1), emotion_match.group(2).strip()
     return "平静", response  # 默认情绪
+
