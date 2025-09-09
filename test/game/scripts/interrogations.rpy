@@ -1,28 +1,3 @@
-screen interrogation_controls():
-    frame:
-        xalign 0.95
-        yalign 0.05
-        background None
-        vbox:
-            # 添加边框的按钮
-            frame:
-                background "#FFD700"
-                padding (6, 6)  # 边框宽度
-                xminimum 208  # 按钮宽度 + 边框宽度
-                yminimum 68   # 按钮高度 + 边框宽度
-
-                textbutton "返回主菜单":
-                    action Jump("main_menu_1")
-                    text_size 35
-                    text_color "#FFFFFF"
-                    text_hover_color "#FFFFFF"
-                    background "#487d17"  # 亮红色背景
-                    hover_background "#1c4f0c"  # 悬停时更亮的红色
-                    xminimum 200
-                    yminimum 60
-                    padding (20, 15)
-
-
 label interrogate_monteff:
 
     scene empty_room with fade

@@ -18,12 +18,11 @@
     stop movie
     hide movie
     "正当你准备休息时，一张从你口袋中滑落的旧照片让你陷入了回忆..."
-    show expression "images/Calgary_Ham_old.jpeg" at truecenter with dissolve
-    menu:
-        "回忆":
-            jump detective_background
+
+    call screen clickable_calgary_image
 
 label detective_background:
+    show expression "images/Calgary_Ham_old.jpeg" at truecenter
     "你是一名来自英国约克郡的侦探，名叫卡尔加利·海姆(Calgary Ham)。"
     "你出生于侦探世家，从小拜读夏洛克福尔摩斯的著作。"
     "1921年，你进入伦敦警探专门学校学习，并在毕业后经营一家小侦探所。"
