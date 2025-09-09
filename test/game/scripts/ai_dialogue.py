@@ -7,7 +7,7 @@ from scripts.memory_manager import load_memory, save_memory
 MODEL_CONFIGS = {
     "monteff": {"api_url": "https://dashscope.aliyuncs.com/compatible-mode/v1", "model": "qwen-turbo", "temperature": 0.6},
     "hoffman": {"api_url": "https://dashscope.aliyuncs.com/compatible-mode/v1", "model": "qwen-turbo", "temperature": 0.8}, 
-    "kremtanivsky": {"api_url": "https://dashscope.aliyuncs.com/compatible-mode/v1", "model": "qwen-plus", "temperature": 0.5},  
+    "kremtanivsky": {"api_url": "https://dashscope.aliyuncs.com/compatible-mode/v1", "model": "qwen-plus", "temperature": 0.7},  
     "john": {"api_url": "https://dashscope.aliyuncs.com/compatible-mode/v1", "model": "qwen-turbo", "temperature": 0.7}, 
     "sok": {"api_url": "https://dashscope.aliyuncs.com/compatible-mode/v1", "model": "qwen-turbo", "temperature": 0.5}, 
 }

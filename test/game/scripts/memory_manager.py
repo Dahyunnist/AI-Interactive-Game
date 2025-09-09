@@ -21,3 +21,15 @@ def save_memory(name, history):
     memory_path = os.path.join(memory_dir, f"{name}.json")
     with open(memory_path, "w", encoding="utf-8") as f:
         json.dump(history, f, ensure_ascii=False, indent=2)
+
+# 清空所有角色记忆文件的函数
+def clear_all_memories():
+    characters = ["monteff", "hoffman", "kremtanivsky", "john", "sok"]
+    base_path = renpy.loader.get_path("")
+    for name in characters:
+        try:
+            memory_path = os.path.join(base_path, "character_memories", f"{name}.json")
+            with open(memory_path, "w") as f:
+                f.write("[]")
+        except Exception as e:
+            print(f"清空 {name} 记忆文件时出错: {str(e)}")

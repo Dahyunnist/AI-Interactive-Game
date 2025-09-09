@@ -1,6 +1,7 @@
 init python:
     import random
     from scripts.ai_dialogue import call_ai_model, extract_emotion
+    from scripts.memory_manager import clear_all_memories
 
     # 旁白样式
     style.narrator_style = Style(style.default)
@@ -25,6 +26,9 @@ init python:
             character(text, interact=False)
             renpy.pause(len(text)/20.0 + 5)
         renpy.hide("video_player")
+
+    # 在游戏开始时调用清空函数，清空所有角色的记忆
+    clear_all_memories()
 
     interrogated_suspects = set()
     monteff_asked = 0

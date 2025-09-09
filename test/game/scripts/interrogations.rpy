@@ -42,9 +42,9 @@ label interrogate_monteff:
     python: 
         monteff_states = {
                 "平静": "video/monteff_idle.webm",
-                "惊慌": "video/monteff_nervous.webm",
-                "悲伤": "video/monteff_sad.webm",
-                "优雅": "video/monteff_graceful.webm"
+                "谨慎": "video/monteff_serious.webm",
+                "慌张": "video/monteff_nervous.webm",
+                "愤怒": "video/monteff_angry.webm"
             }
         while monteff_asked < 5:  
             renpy.say(calgary, f"第{monteff_asked+1}/5轮：你要问蒙特夫太太什么？")
@@ -155,10 +155,10 @@ label interrogate_kremtanivsky:
     # 5-round dialogue loop
     python: 
         kremtanivsky_states = {
-                "严肃": "video/kremtanivsky_serious.webm",
-                "愤怒": "video/kremtanivsky_angry.webm",
-                "坚定": "video/kremtanivsky_firm.webm",
-                "沉思": "video/kremtanivsky_thinking.webm"
+                "平静": "video/kremtanivsky_idle.webm",
+                "谨慎": "video/kremtanivsky_serious.webm",
+                "慌张": "video/kremtanivsky_nervous.webm",
+                "愤怒": "video/kremtanivsky_angry.webm"
             }
         while kremtanivsky_asked < 5:  
             renpy.say(calgary, f"第{kremtanivsky_asked+1}/5轮：你要问克里姆塔涅夫斯基什么？")
@@ -210,10 +210,10 @@ label interrogate_john:
     # 5-round dialogue loop
     python: 
         john_states = {
-                "冷漠": "video/john_cold.webm",
-                "愤怒": "video/john_angry.webm",
-                "不耐烦": "video/john_impatient.webm",
-                "警惕": "video/john_alert.webm"
+                "平静": "video/john_idle.webm",
+                "谨慎": "video/john_serious.webm",
+                "慌张": "video/john_nervous.webm",
+                "愤怒": "video/john_angry.webm"
             }
         while john_asked < 5:  
             renpy.say(calgary, f"第{john_asked+1}/5轮：你要问约翰上校什么？")
@@ -266,10 +266,10 @@ label interrogate_sok:
     # 5-round dialogue loop
     python: 
         sok_states = {
-                "平静": "video/sok_calm.webm",
-                "悲伤": "video/sok_sad.webm",
-                "圆滑": "video/sok_smooth.webm",
-                "疲惫": "video/sok_tired.webm"
+                "平静": "video/john_idle.webm",
+                "谨慎": "video/john_serious.webm",
+                "慌张": "video/john_nervous.webm",
+                "愤怒": "video/john_angry.webm"
             }
         while sok_asked < 5:  
             renpy.say(calgary, f"第{sok_asked+1}/5轮：你要问苏和华什么？")
