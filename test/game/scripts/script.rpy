@@ -1,9 +1,8 @@
 ﻿label start:
-    scene cover_image with fade
-    pause
-
     # 显示欧洲形势地图和旁白
-    scene europe_map with fade
+    scene europe_map
+    show cover_image
+    hide cover_image with fade
     "1933年，德国法西斯上台后，对周边国家采取蚕食吞并政策，严重威胁英国、法国、苏联等国家的边防安全。"
     "经济和政治局势的动荡导致谋杀率大幅增加，绑架案四处频发。西欧各国对德国采取绥靖政策，牺牲小国家、商人和贫民利益换取并不长久的国家安全。"
     "西装革履的英法贵族为保全自身，不断签订各种条约，将周边小国推入法西斯的血盆大口。"
@@ -77,9 +76,9 @@ label suspect_info:
     scene suspects_lineup with fade
     menu:
         "蒙特夫(Monteff)":
-            show fond at center with dissolve
+            show monteff at center with dissolve
             "范德·蒙特夫(Fond Monteff) - 法国外交大臣阿兰德·蒙特夫的妻子，著名戏剧演员弗洛尼亚的女儿。女儿黛西·蒙特夫是当年罗霍姆绑架案的受害人之一，她在交付 15 万英镑的赎金之后，看到的是女儿的尸体，她至少已经死了一个多星期。"
-            hide fond with dissolve
+            hide monteff with dissolve
             jump suspect_info
         "霍夫曼(Hoffman)":
             show hoffman at center with dissolve

@@ -92,7 +92,7 @@ init:
         zoom(0.75)
     image john:
         "John_Manipur.png"
-        zoom(0.65)
+        zoom(0.75)
     image kremtanivsky:
         "Kremtanivsky.png"
         zoom(0.75)
@@ -105,19 +105,27 @@ init:
         zoom(0.3)
     image side calgary:
         "Calgary_Ham_head.png"
-        zoom(0.5)
+        zoom(0.25)
     image side monteff:
         "Fond_Monteff_head.png"
-        zoom(0.25)
+        zoom(0.4)
     image side john:
         "John_Manipur_head.png"
-        zoom(0.30)
+        zoom(0.35)
     image side kremtanivsky:
         "Kremtanivsky_head.png"
-        zoom(0.25)
+        zoom(0.6)
     image side sok:
         "Sok_Tor_Hof_head.png"
-        zoom(0.35)
+        zoom(0.45)
+
+
+    define hoffman = Character("Hoffman", image = "hoffman", who_color="#98da8c")
+    define calgary = Character("Calgary", image = "calgary", who_color="#0929c7")
+    define monteff = Character("Monteff", image = "monteff", who_color="#ee09c0")
+    define john = Character("John", image = "john", who_color="#6b65d3")
+    define kremtanivsky = Character("Kremtanivsky", image = "kremtanivsky", who_color="#c9b2be")
+    define sok = Character("Sok", image = "sok", who_color="#d8e5d2")
 
     image monteff_idle:
         "images/character_gestures/monteff_idle.png"
@@ -192,6 +200,7 @@ init:
     define john = Character("John", image = "john")
     define kremtanivsky = Character("Kremtanivsky", image = "kremtanivsky")
     define sok = Character("Sok", image = "sok")
+
 
     # 功能：播放动画时渐次展示旁白
     default narration_queue = []

@@ -1,10 +1,10 @@
 label ending_monteff:
     scene empty_room with fade
-    show fond at center with dissolve
+    show monteff at center with dissolve
 
     calgary "蒙特夫太太，我观察到您的话语有明显躲闪，眼神飘忽不定，这更加重了我的怀疑。结合唯一落在案发现场的警花花瓣——它正是您帽子上的那一款——我几乎可以断定您就是凶手。"
     
-    fond "（低头沉默片刻，然后抬头）是的...我承认我想杀他。但事实并非完全如你所想..."
+    monteff "（低头沉默片刻，然后抬头）是的...我承认我想杀他。但事实并非完全如你所想..."
     
     "凭着掉落在现场的蒙特夫太太的散落日记以及她的口述，你逐渐理清数年前发生的那场惨案。"
     
@@ -16,7 +16,7 @@ label ending_monteff:
     
     "看到倒在血泊中毫无生气的女儿，蒙特夫太太当即昏厥在地上。三个月后，丈夫因为受不了突如其来的打击，从公寓楼顶一跃而下；母亲的哮喘愈发严重，终于也在一个安静的冬夜中与世长辞。"
     
-    fond "为了施行报复，我只身登上这趟列车，准备与幕后凶手莱姆尼安同归于尽。但是...我还没来得及动手..."
+    monteff "为了施行报复，我只身登上这趟列车，准备与幕后凶手莱姆尼安同归于尽。但是...我还没来得及动手..."
     
     calgary "什么？您是说..."
     
@@ -28,7 +28,7 @@ label ending_monteff:
     
     "你做出了错误的指控，真凶顺利逍遥法外……"
     
-    hide fond with dissolve
+    hide monteff with dissolve
     jump finish
 
 label ending_hoffman:
