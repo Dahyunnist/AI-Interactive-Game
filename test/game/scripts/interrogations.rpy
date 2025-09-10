@@ -12,15 +12,15 @@ label interrogate_monteff:
         monteff "（微微低头，声音轻柔）尊敬的侦探先生，请问您有什么需要我协助的吗？我会尽力配合您的调查。"
 
     scene empty_room with fade
-    show monteff_idle at center with dissolve
+    show monteff idle at center with dissolve
 
     # 5-round dialogue loop
     python: 
         monteff_states = {
-                "平静": "monteff_idle",
-                "谨慎": "monteff_serious",
-                "慌张": "monteff",
-                "愤怒": "monteff_angry"
+                "平静": "monteff idle",
+                "谨慎": "monteff serious",
+                "慌张": "monteff nervous",
+                "愤怒": "monteff angry"
             }
         while monteff_asked < 5:  
             renpy.say(calgary, f"第{monteff_asked+1}/5轮：你要问蒙特夫太太什么？")
@@ -45,8 +45,7 @@ label interrogate_monteff:
     ]
     python:
         character_saying("video/monteff_leaving.webm", monteff)
-    
-    # 蒙特夫离开
+
     pause(1.5)
     show monteff:
         easeout 1.0 xoffset 2000
@@ -72,15 +71,15 @@ label interrogate_hoffman:
         hoffman "（双手交叉）侦探先生，您随便问，但我只能回答您五个问题"
 
     scene empty_room with fade
-    show hoffman_idle at center with dissolve
+    show hoffman idle at center with dissolve
 
     # 5-round dialogue loop
     python: 
         hoffman_states = {
-                "平静": "hoffman_idle",
-                "谨慎": "hoffman_serious",
-                "慌张": "hoffman_nervous",
-                "愤怒": "hoffman_angry"
+                "平静": "hoffman idle",
+                "谨慎": "hoffman serious",
+                "慌张": "hoffman nervous",
+                "愤怒": "hoffman angry"
             }
         while hoffman_asked < 5:
             renpy.say(calgary, f"第{hoffman_asked+1}/5轮：你要问霍夫曼议员什么？")
@@ -100,6 +99,7 @@ label interrogate_hoffman:
             renpy.say(hoffman, clean_response)
 
     hide screen interrogation_controls with fade
+    hide hoffman
     $ narration_queue = [
         "好了，侦探先生，我对这些感到厌烦了，我相信我们都需要休息一下"
     ]
@@ -107,12 +107,7 @@ label interrogate_hoffman:
         character_saying("video/hoffman_standing.webm", hoffman)
     
     # 霍夫曼离开
-    pause(1.5)
-    $ renpy.movie_cutscene("video/hoffman_leaving.webm") 
-    show hoffman:
-        easeout 1.0 xoffset 2000
-    with dissolve
-    pause 3.0
+    $ renpy.movie_cutscene("video/hoffman_leaving.webm")
     
     "霍夫曼离开了审讯室。"
 
@@ -134,15 +129,15 @@ label interrogate_kremtanivsky:
         kremtanivsky "（双手抱胸，微微仰头）侦探同志，请抓紧时间。苏联警察机关有严格的纪律，我不会隐瞒任何事实。"
 
     scene empty_room with fade
-    show krem_idle at center with dissolve
+    show krem idle at center with dissolve
 
     # 5-round dialogue loop
     python: 
         kremtanivsky_states = {
-                "平静": "krem_idle",
-                "谨慎": "krem_serious",
-                "慌张": "krem_nervous",
-                "愤怒": "krem_angry"
+                "平静": "krem idle",
+                "谨慎": "krem serious",
+                "慌张": "krem nervous",
+                "愤怒": "krem angry"
             }
         while kremtanivsky_asked < 5:  
             renpy.say(calgary, f"第{kremtanivsky_asked+1}/5轮：你要问克里姆塔涅夫斯基什么？")
@@ -168,9 +163,8 @@ label interrogate_kremtanivsky:
     python:
         character_saying("video/kremtanivsky_leaving.webm", kremtanivsky)
     
-    # 蒙特夫离开
     pause(1.5)
-    show kremtanivsky:
+    show krem:
         easeout 1.0 xoffset 2000
     with dissolve
     pause 3.0
@@ -194,15 +188,15 @@ label interrogate_john:
         john "（不耐烦地看着手表）侦探先生，我时间有限，请您尽快。我还有军务要处理。"
 
     scene empty_room with fade
-    show john_idle at center with dissolve
+    show john idle at center with dissolve
 
     # 5-round dialogue loop
     python: 
         john_states = {
-                "平静": "john_idle",
-                "谨慎": "john_serious",
-                "慌张": "john",
-                "愤怒": "john_angry"
+                "平静": "john idle",
+                "谨慎": "john serious",
+                "慌张": "john nervous",
+                "愤怒": "john angry"
             }
         while john_asked < 5:  
             renpy.say(calgary, f"第{john_asked+1}/5轮：你要问约翰上校什么？")
@@ -227,8 +221,7 @@ label interrogate_john:
     ]
     python:
         character_saying("video/john_leaving.webm", john)
-    
-    # 蒙特夫离开
+
     pause(1.5)
     show john:
         easeout 1.0 xoffset 2000
@@ -254,15 +247,15 @@ label interrogate_sok:
         sok "（叹气）侦探先生，我只是个普通商人，来这里做生意的。请问您有什么需要了解的？"
 
     scene empty_room with fade
-    show sok_idle at center with dissolve
+    show sok idle at center with dissolve
 
     # 5-round dialogue loop
     python: 
         sok_states = {
-                "平静": "sok_idle",
-                "谨慎": "sok_serious",
-                "慌张": "sok",
-                "愤怒": "sok_angry"
+                "平静": "sok idle",
+                "谨慎": "sok serious",
+                "慌张": "sok nervous",
+                "愤怒": "sok angry"
             }
         while sok_asked < 5:  
             renpy.say(calgary, f"第{sok_asked+1}/5轮：你要问苏和华什么？")
@@ -288,7 +281,6 @@ label interrogate_sok:
     python:
         character_saying("video/sok_leaving.webm", sok)
     
-    # 蒙特夫离开
     pause(1.5)
     show sok:
         easeout 1.0 xoffset 2000

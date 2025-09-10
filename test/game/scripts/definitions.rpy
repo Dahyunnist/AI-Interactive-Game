@@ -93,7 +93,7 @@ init:
     image john:
         "John_Manipur.png"
         zoom(0.75)
-    image kremtanivsky:
+    image krem:
         "Kremtanivsky.png"
         zoom(0.75)
     image sok:
@@ -112,7 +112,7 @@ init:
     image side john:
         "John_Manipur_head.png"
         zoom(0.35)
-    image side kremtanivsky:
+    image side krem:
         "Kremtanivsky_head.png"
         zoom(0.6)
     image side sok:
@@ -124,83 +124,73 @@ init:
     define calgary = Character("Calgary", image = "calgary", who_color="#0929c7")
     define monteff = Character("Monteff", image = "monteff", who_color="#ee09c0")
     define john = Character("John", image = "john", who_color="#6b65d3")
-    define kremtanivsky = Character("Kremtanivsky", image = "kremtanivsky", who_color="#c9b2be")
+    define kremtanivsky = Character("Kremtanivsky", image = "krem", who_color="#c9b2be")
     define sok = Character("Sok", image = "sok", who_color="#d8e5d2")
 
-    image monteff_idle:
+    image monteff idle:
         "images/character_gestures/monteff_idle.png"
         zoom 0.75
-    image monteff_serious:
+    image monteff serious:
         "images/character_gestures/monteff_serious.png"
         zoom 0.75
-    image monteff_nervous:
+    image monteff nervous:
         "images/character_gestures/monteff_nervous.png"
         zoom 0.75
-    image monteff_angry:
+    image monteff angry:
         "images/character_gestures/monteff_angry.png"
         zoom 0.75
 
-    image hoffman_idle:
+    image hoffman idle:
         "images/character_gestures/hoffman_idle.png"
         zoom 0.75
-    image hoffman_serious:
+    image hoffman serious:
         "images/character_gestures/hoffman_serious.png"
         zoom 0.75
-    image hoffman_nervous:
+    image hoffman nervous:
         "images/character_gestures/hoffman_nervous.png"
         zoom 0.75
-    image hoffman_angry:
+    image hoffman angry:
         "images/character_gestures/hoffman_angry.png"
         zoom 0.75
     
-    image john_idle:
+    image john idle:
         "images/character_gestures/john_idle.png"
         zoom 0.75
-    image john_serious:
+    image john serious:
         "images/character_gestures/john_serious.png"
         zoom 0.75
-    image john_nervous:
+    image john nervous:
         "images/character_gestures/john_nervous.png"
         zoom 0.75
-    image john_angry:
+    image john angry:
         "images/character_gestures/john_angry.png"
         zoom 0.75
 
-    image krem_idle:
+    image krem idle:
         "images/character_gestures/krem_idle.png"
         zoom 0.75
-    image krem_serious:
+    image krem serious:
         "images/character_gestures/krem_serious.png"
         zoom 0.75
-    image krem_nervous:
+    image krem nervous:
         "images/character_gestures/krem_nervous.png"
         zoom 0.75
-    image krem_angry:
+    image krem angry:
         "images/character_gestures/krem_angry.png"
         zoom 0.75
 
-    image sok_idle:
+    image sok idle:
         "images/character_gestures/sok_idle.png"
         zoom 0.75
-    image sok_serious:
+    image sok serious:
         "images/character_gestures/sok_serious.png"
         zoom 0.75
-    image sok_nervous:
+    image sok nervous:
         "images/character_gestures/sok_nervous.png"
         zoom 0.75
-    image sok_angry:
+    image sok angry:
         "images/character_gestures/sok_angry.png"
         zoom 0.75
-
-    
-
-    define hoffman = Character("Hoffman", image = "hoffman")
-    define calgary = Character("Calgary", image = "calgary")
-    define monteff = Character("Monteff", image = "fond")
-    define john = Character("John", image = "john")
-    define kremtanivsky = Character("Kremtanivsky", image = "kremtanivsky")
-    define sok = Character("Sok", image = "sok")
-
 
     # 功能：播放动画时渐次展示旁白
     default narration_queue = []
