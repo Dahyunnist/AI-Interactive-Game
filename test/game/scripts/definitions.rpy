@@ -53,11 +53,30 @@ init:
     image empty_room:
         "empty_room.png"
         size(1920, 1080)
+    image hoffman_sitting:
+        "hoffman_sitting.png"
+        size(1920, 1080)
+    image john_sitting:
+        "john_sitting.png"
+        size(1920, 1080)
+    image krem_sitting:
+        "krem_sitting.png"
+        size(1920, 1080)
+    image monteff_sitting:
+        "monteff_sitting.png"
+        size(1920, 1080)
+    image sok_sitting:
+        "sok_sitting.png"
+        size(1920, 1080)
+    
     image interrogation_room = Solid("#ecf0f1")
+    
     image victim_blood:
         "victim_blood.png"
         size(1920, 1080)
-    image suspects_lineup = Solid("#212128")
+    image suspects_lineup:
+        "suspects_lineup.png"
+        size(1920, 1080)
     image finish:
         "finish.jpeg"
         size(1920, 1080)
@@ -99,6 +118,73 @@ init:
     image side sok:
         "Sok_Tor_Hof_head.png"
         zoom(0.35)
+
+    image monteff_idle:
+        "images/character_gestures/monteff_idle.png"
+        zoom 0.75
+    image monteff_serious:
+        "images/character_gestures/monteff_serious.png"
+        zoom 0.75
+    image monteff_nervous:
+        "images/character_gestures/monteff_nervous.png"
+        zoom 0.75
+    image monteff_angry:
+        "images/character_gestures/monteff_angry.png"
+        zoom 0.75
+
+    image hoffman_idle:
+        "images/character_gestures/hoffman_idle.png"
+        zoom 0.75
+    image hoffman_serious:
+        "images/character_gestures/hoffman_serious.png"
+        zoom 0.75
+    image hoffman_nervous:
+        "images/character_gestures/hoffman_nervous.png"
+        zoom 0.75
+    image hoffman_angry:
+        "images/character_gestures/hoffman_angry.png"
+        zoom 0.75
+    
+    image john_idle:
+        "images/character_gestures/john_idle.png"
+        zoom 0.75
+    image john_serious:
+        "images/character_gestures/john_serious.png"
+        zoom 0.75
+    image john_nervous:
+        "images/character_gestures/john_nervous.png"
+        zoom 0.75
+    image john_angry:
+        "images/character_gestures/john_angry.png"
+        zoom 0.75
+
+    image krem_idle:
+        "images/character_gestures/krem_idle.png"
+        zoom 0.75
+    image krem_serious:
+        "images/character_gestures/krem_serious.png"
+        zoom 0.75
+    image krem_nervous:
+        "images/character_gestures/krem_nervous.png"
+        zoom 0.75
+    image krem_angry:
+        "images/character_gestures/krem_angry.png"
+        zoom 0.75
+
+    image sok_idle:
+        "images/character_gestures/sok_idle.png"
+        zoom 0.75
+    image sok_serious:
+        "images/character_gestures/sok_serious.png"
+        zoom 0.75
+    image sok_nervous:
+        "images/character_gestures/sok_nervous.png"
+        zoom 0.75
+    image sok_angry:
+        "images/character_gestures/sok_angry.png"
+        zoom 0.75
+
+    
 
     define hoffman = Character("Hoffman", image = "hoffman")
     define calgary = Character("Calgary", image = "calgary")

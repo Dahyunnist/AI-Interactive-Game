@@ -66,24 +66,23 @@ label interrogate_hoffman:
         "你已经问过霍夫曼议员5个问题了，不能再继续询问了。"
         jump main_menu_1
 
+    show hoffman at center with dissolve
+
     show screen interrogation_controls
 
     if hoffman_asked == 0:
         hoffman "（双手交叉）侦探先生，您随便问，但我只能回答您五个问题"
-
-    scene empty_room with fade
-    show hoffman_idle at center with dissolve
-
+    
     # 5-round dialogue loop
     python: 
         hoffman_states = {
-                "平静": "hoffman_idle",
-                "谨慎": "hoffman_serious",
-                "慌张": "hoffman_nervous",
-                "愤怒": "hoffman_angry"
+                "平静": "video/hoffman_idle.webm",
+                "谨慎": "video/hoffman_serious.webm",
+                "慌张": "video/hoffman_nervous.webm",
+                "愤怒": "video/hoffman_angry.webm"
             }
-        while hoffman_asked < 5:
-            renpy.say(calgary, f"第{hoffman_asked+1}/5轮：你要问霍夫曼议员什么？")
+        while hoffman_asked < 5:  
+            renpy.say(calgary, f"第{hoffman_asked+1}/5轮：你要问hoffman什么？")
             question = renpy.input(f"问题 {hoffman_asked+1}: ", length = 100).strip()
             if not question:
                 renpy.say(None, "请输入有效问题")
@@ -93,12 +92,9 @@ label interrogate_hoffman:
             current_emotion, clean_response = interrogate(question, "hoffman")
             hoffman_asked += 1
             narration_queue = [clean_response]
-            # 展示对应情绪图片
-            renpy.hide("hoffman")
-            renpy.show(hoffman_states[current_emotion], at_list=[center], tag="hoffman")
-            renpy.with_statement(dissolve)
-            renpy.say(hoffman, clean_response)
-
+            character_saying(hoffman_states[current_emotion], hoffman)
+            renpy.pause(0.3)
+    
     hide screen interrogation_controls with fade
     $ narration_queue = [
         "好了，侦探先生，我对这些感到厌烦了，我相信我们都需要休息一下"
@@ -116,9 +112,9 @@ label interrogate_hoffman:
     
     "霍夫曼离开了审讯室。"
 
-    $ interrogated_suspects.add("hoffman")
     jump main_menu_1
-    
+
+    $ interrogated_suspects.add("hoffman")
 
 label interrogate_kremtanivsky:
 
@@ -128,21 +124,20 @@ label interrogate_kremtanivsky:
         "你已经问过克里姆塔涅夫斯基5个问题了，不能再继续询问了。"
         jump main_menu_1
 
+    show kremtanivsky at center with dissolve
+
     show screen interrogation_controls
 
     if kremtanivsky_asked == 0:
         kremtanivsky "（双手抱胸，微微仰头）侦探同志，请抓紧时间。苏联警察机关有严格的纪律，我不会隐瞒任何事实。"
-
-    scene empty_room with fade
-    show krem_idle at center with dissolve
-
+    
     # 5-round dialogue loop
     python: 
         kremtanivsky_states = {
-                "平静": "krem_idle",
-                "谨慎": "krem_serious",
-                "慌张": "krem_nervous",
-                "愤怒": "krem_angry"
+                "平静": "video/kremtanivsky_idle.webm",
+                "谨慎": "video/kremtanivsky_serious.webm",
+                "慌张": "video/kremtanivsky_nervous.webm",
+                "愤怒": "video/kremtanivsky_angry.webm"
             }
         while kremtanivsky_asked < 5:  
             renpy.say(calgary, f"第{kremtanivsky_asked+1}/5轮：你要问克里姆塔涅夫斯基什么？")
@@ -155,11 +150,8 @@ label interrogate_kremtanivsky:
             current_emotion, clean_response = interrogate(question, "kremtanivsky")
             kremtanivsky_asked += 1
             narration_queue = [clean_response]
-            # 展示对应情绪图片
-            renpy.hide("kremtanivsky")
-            renpy.show(kremtanivsky_states[current_emotion], at_list=[center], tag="kremtanivsky")
-            renpy.with_statement(dissolve)
-            renpy.say(kremtanivsky, clean_response)
+            character_saying(kremtanivsky_states[current_emotion], kremtanivsky)
+            renpy.pause(0.3)
 
     hide screen interrogation_controls with fade
     $ narration_queue = [
@@ -168,7 +160,7 @@ label interrogate_kremtanivsky:
     python:
         character_saying("video/kremtanivsky_leaving.webm", kremtanivsky)
     
-    # 蒙特夫离开
+    # 克里姆塔涅夫斯基离开
     pause(1.5)
     show kremtanivsky:
         easeout 1.0 xoffset 2000
@@ -181,28 +173,26 @@ label interrogate_kremtanivsky:
     jump main_menu_1
 
 label interrogate_john:
-
     scene john_sitting with fade
 
     if john_asked >= 5:
         "你已经问过约翰上校5个问题了，不能再继续询问了。"
         jump main_menu_1
 
+    show john at center with dissolve
+
     show screen interrogation_controls
 
     if john_asked == 0:
         john "（不耐烦地看着手表）侦探先生，我时间有限，请您尽快。我还有军务要处理。"
-
-    scene empty_room with fade
-    show john_idle at center with dissolve
-
+    
     # 5-round dialogue loop
     python: 
         john_states = {
-                "平静": "john_idle",
-                "谨慎": "john_serious",
-                "慌张": "john",
-                "愤怒": "john_angry"
+                "平静": "video/john_idle.webm",
+                "谨慎": "video/john_serious.webm",
+                "慌张": "video/john_nervous.webm",
+                "愤怒": "video/john_angry.webm"
             }
         while john_asked < 5:  
             renpy.say(calgary, f"第{john_asked+1}/5轮：你要问约翰上校什么？")
@@ -215,12 +205,9 @@ label interrogate_john:
             current_emotion, clean_response = interrogate(question, "john")
             john_asked += 1
             narration_queue = [clean_response]
-            # 展示对应情绪图片
-            renpy.hide("john")
-            renpy.show(john_states[current_emotion], at_list=[center], tag="john")
-            renpy.with_statement(dissolve)
-            renpy.say(john, clean_response)
-
+            character_saying(john_states[current_emotion], john)
+            renpy.pause(0.3)
+    
     hide screen interrogation_controls with fade
     $ narration_queue = [
         "侦探先生，如果您没有确凿证据，请不要再浪费我的时间。我还有更重要的事情要处理。"
@@ -228,7 +215,7 @@ label interrogate_john:
     python:
         character_saying("video/john_leaving.webm", john)
     
-    # 蒙特夫离开
+    # 约翰离开
     pause(1.5)
     show john:
         easeout 1.0 xoffset 2000
@@ -248,21 +235,20 @@ label interrogate_sok:
         "你已经问过苏和华5个问题了，不能再继续询问了。"
         jump main_menu_1
 
+    show sok at center with dissolve
+
     show screen interrogation_controls
 
     if sok_asked == 0:
         sok "（叹气）侦探先生，我只是个普通商人，来这里做生意的。请问您有什么需要了解的？"
-
-    scene empty_room with fade
-    show sok_idle at center with dissolve
-
+    
     # 5-round dialogue loop
     python: 
         sok_states = {
-                "平静": "sok_idle",
-                "谨慎": "sok_serious",
-                "慌张": "sok",
-                "愤怒": "sok_angry"
+                "平静": "video/john_idle.webm",
+                "谨慎": "video/john_serious.webm",
+                "慌张": "video/john_nervous.webm",
+                "愤怒": "video/john_angry.webm"
             }
         while sok_asked < 5:  
             renpy.say(calgary, f"第{sok_asked+1}/5轮：你要问苏和华什么？")
@@ -275,12 +261,9 @@ label interrogate_sok:
             current_emotion, clean_response = interrogate(question, "sok")
             sok_asked += 1
             narration_queue = [clean_response]
-            # 展示对应情绪图片
-            renpy.hide("sok")
-            renpy.show(sok_states[current_emotion], at_list=[center], tag="sok")
-            renpy.with_statement(dissolve)
-            renpy.say(sok, clean_response)
-
+            character_saying(sok_states[current_emotion], sok)
+            renpy.pause(0.3)
+    
     hide screen interrogation_controls with fade
     $ narration_queue = [
         "侦探先生，如果您没有其他问题，请允许我回去休息了。这趟旅程让我感到非常疲惫。"
@@ -288,7 +271,7 @@ label interrogate_sok:
     python:
         character_saying("video/sok_leaving.webm", sok)
     
-    # 蒙特夫离开
+    # 苏和华离开
     pause(1.5)
     show sok:
         easeout 1.0 xoffset 2000

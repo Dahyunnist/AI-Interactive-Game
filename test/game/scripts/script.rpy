@@ -39,11 +39,16 @@ label night:
     "本就不安的乘客中，尖叫声此起彼伏，惊慌地四散奔逃。"
 
     # 显示死者图片和旁白
+    show expression Movie(play="video/detective_inspecting.webm", loop=False, size=(1920, 1080)) as movie
+    with fade
+    "你以最快的速度奔向枪声响起的地方，但是太迟了……"
+    stop movie
+    hide movie
     scene victim_blood with fade
-    "当你赶到时，只见到中弹者倒在血泊中，毛发散乱，瞳孔放大，苍白的脸扭曲而惊愕，伸手探去早已没了鼻息。"
+    "中弹者倒在血泊中，毛发散乱，瞳孔放大，苍白的脸扭曲而惊愕，伸手探去早已没了鼻息。"
     pause 2.0
-    scene suspects_lineup
     "由于案件发生突然，车厢狭窄拥挤，你断定凶手仍在现场不远处。"
+    scene suspects_lineup with fade
     "通过简单取证与对比，你锁定了邻近3节车厢内的5名嫌疑人，准备进一步进行审问。可直觉告诉你，这件谋杀案的背后根本没有你想的那么简单......."
 
 label main_menu_1:
@@ -119,7 +124,7 @@ label interrogation_menu:
             jump main_menu_1
 
 label accuse_culprit:
-    scene background1 with fade
+    scene suspects_lineup with fade
     "请选择要指控的嫌疑人:"
     menu:
         "蒙特夫(Monteff)":
