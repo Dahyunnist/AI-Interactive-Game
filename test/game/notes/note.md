@@ -4,3 +4,7 @@
     ```
     ffmpeg -i irene.mp4 -c:v libvpx -b:v 1M -c:a libvorbis irene.webm
     ```
+2. 将MP4文件转换为CosyVoice可用于训练的16khz采样音频：
+   ```
+   ffmpeg -i zhy2.mp4 -ar 16000 -ac 1 zhy2.wav
+   ```

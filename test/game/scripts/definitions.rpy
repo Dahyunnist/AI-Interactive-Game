@@ -37,6 +37,30 @@ init python:
     john_asked = 0
     sok_asked = 0
 
+    import threading
+    import time
+
+    scream_playing = False
+
+    suspect_info_flag = 0
+    main_menu_flag = 0
+
+    def scream_loop():
+        global stop_screaming
+        scream_files = [f"audio/scream/scream{i}.mp3" for i in range(1, 16)]
+        selected = "gun.mp3"
+        last_scream = None
+
+        while scream_playing:
+            # 播放音频
+            renpy.sound.play(selected)
+            # 随机选择一个与上次不同的音频
+            available = [s for s in scream_files if s != last_scream]
+            selected = renpy.random.choice(available)
+            last_scream = selected
+            # 等待音频播放时间加上1秒
+            time.sleep(3.0)
+
 init:
     image cover_image:
         "cover.png"
@@ -211,3 +235,48 @@ init:
     #     # 清理
     #     hide video_player
     #     return
+
+    image monteff_info:
+        "images/monteff_info.jpg"
+        size(1920, 1080)
+    
+    image hoffman_info:
+        "images/hoffman_info.jpg"
+        size(1920, 1080)
+
+    image krem_info:
+        "images/krem_info.jpg"
+        size(1920, 1080)
+
+    image john_info:
+        "images/john_info.jpg"
+        size(1920, 1080)
+
+    image sok_info:
+        "images/sok_info.jpg"
+        size(1920, 1080)
+
+    image calgary_court:
+        "images/calgary_court.jpg"
+        size(1920, 1080)
+
+    image hoffman_gun:
+        "images/hoffman_gun.png"
+        size(1920, 1080)
+
+    image calgary_smoke:
+        "images/calgary_smoke.jpg"
+        size(1920, 1080)
+
+    image endings_1:
+        "images/endings_1.jpg"
+        size(1920, 1080)
+
+    image endings_6_1:
+        "images/endings_6_1.jpg"
+        size(1920, 1080)    
+
+    image hoffman_debate:
+        "images/hoffman_debate.jpg"
+        size(1920, 1080)  
+

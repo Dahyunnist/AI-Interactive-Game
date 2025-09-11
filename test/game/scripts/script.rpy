@@ -1,5 +1,5 @@
 ﻿label start:
-    # 显示欧洲形势地图和旁白
+    play music "<loop 0>AImusic3.mp3" fadein 2.0
     scene europe_map
     show cover_image
     hide cover_image with fade
@@ -34,34 +34,44 @@ label night:
     scene background2 with fade
     "夜间，由于愈发强烈的暴风雪，列车只得临时停车，并熄灭大多数煤气灯以保证仅剩燃料的持续供应。"
     "昏暗而逼仄的车厢内，被困的人们焦虑而又恐惧地等待。"
-    "当车厢中的不安气氛达到顶峰时，第十四与十五节车厢的连接处传来一声尖叫，然后是两三声沉闷的枪响。"
-    "本就不安的乘客中，尖叫声此起彼伏，惊慌地四散奔逃。"
-
     # 显示死者图片和旁白
+    $ scream_playing = True
+    $ renpy.invoke_in_thread(scream_loop)
+    "当车厢中的不安气氛达到顶峰时，第十四与十五节车厢的连接处传来三声沉闷的枪响，"
+    "然后是一声尖叫。"
+    "本就不安的乘客中，尖叫声此起彼伏，惊慌地四散奔逃。"
+    scene victim_blood
     show expression Movie(play="video/detective_inspecting.webm", loop=False, size=(1920, 1080)) as movie
-    with fade
+    stop music fadeout 0.5
+    play music "<loop 0>AImusic1.mp3"
+    $ scream_playing = False
     "你以最快的速度奔向枪声响起的地方，但是太迟了……"
+    "中弹者倒在血泊中，毛发散乱，瞳孔放大，苍白的脸扭曲而惊愕，伸手探去早已没了鼻息。"
     stop movie
     hide movie
-    scene victim_blood with fade
-    "中弹者倒在血泊中，毛发散乱，瞳孔放大，苍白的脸扭曲而惊愕，伸手探去早已没了鼻息。"
-    pause 2.0
     "由于案件发生突然，车厢狭窄拥挤，你断定凶手仍在现场不远处。"
     scene suspects_lineup with fade
     "通过简单取证与对比，你锁定了邻近3节车厢内的5名嫌疑人，准备进一步进行审问。可直觉告诉你，这件谋杀案的背后根本没有你想的那么简单......."
 
 label main_menu_1:
+    if main_menu_flag == 0:
+        play music "<loop 0>AImusic5.mp3" fadein 2.0
+    $ main_menu_flag = 1
     hide screen interrogation_controls
-    scene background2 with fade
+    scene suspects_lineup with fade
     menu:
         "调查死者信息":
             jump victim_info
         "查看嫌疑人信息":
+            $ main_menu_flag = 0
             jump suspect_info
         "审讯嫌疑人":
+            $ main_menu_flag = 0
             jump interrogation_menu
         "指认凶手":
+            $ main_menu_flag = 0
             jump accuse_culprit
+
 
 label victim_info:
     show victim_blood with fade
@@ -73,39 +83,44 @@ label victim_info:
 
 # 嫌疑人信息查看界面
 label suspect_info:
-    scene suspects_lineup with fade
+    if suspect_info_flag == 0:
+        play music "<loop 0>AImusic3.mp3"
+    $ suspect_info_flag = 1
+    scene empty_room with fade
     menu:
         "蒙特夫(Monteff)":
-            show monteff at center with dissolve
+            show monteff_info at center with dissolve
             "范德·蒙特夫(Fond Monteff) - 法国外交大臣阿兰德·蒙特夫的妻子，著名戏剧演员弗洛尼亚的女儿。女儿黛西·蒙特夫是当年罗霍姆绑架案的受害人之一，她在交付 15 万英镑的赎金之后，看到的是女儿的尸体，她至少已经死了一个多星期。"
-            hide monteff with dissolve
+            hide monteff_info with dissolve
             jump suspect_info
         "霍夫曼(Hoffman)":
-            show hoffman at center with dissolve
+            show hoffman_info at center with dissolve
             "拉杰特·杨·霍夫曼(Rhajeat young Hoffman) - 英国激进派议员，极度反对社会上蔓延的妥协思潮，据他所述，'需要制造一场令人震惊的案件，才能让反对我的那些蠢人警醒'。"
-            hide hoffman with dissolve
+            hide hoffman_info with dissolve
             jump suspect_info
         "克里姆塔涅夫斯基(Kremtanivsky)":
-            show kremtanivsky at center with dissolve
+            show krem_info at center with dissolve
             "克里姆塔涅夫斯基(Kremtanivsky) - 原苏联列宁格勒第三区警察局长，因管辖区发生重大绑架撕票案而遭到免职。只希望抓到凶手严惩以报仇雪恨，可碍于凶手身份扑朔迷离至今未果。"
-            hide kremtanivsky with dissolve
+            hide krem_info with dissolve
             jump suspect_info
         "约翰(John)":
-            show john at center with dissolve
+            show john_info at center with dissolve
             "约翰·曼尼普尔(John Manipur) - 原英属印度军官，三年前被调回欧洲应对即将爆发的战争。在一年前的巴伐利亚冲突中，他的父亲、弟弟、姐姐均葬身于德国统领下的莱姆尼安雇佣军的炮火中。"
-            hide john with dissolve
+            hide john_info with dissolve
             jump suspect_info
         "苏和华(Sok)":
-            show sok at center with dissolve
+            show sok_info at center with dissolve
             "苏和华(Sok Tor Hof) - 法属越南商人，12 年前西贡走私大案，三岁的儿子在港口玩耍时被装上货船带走，至今下落不明。寻子心切的他在得到线索后只身赶赴欧洲寻子，等来的却是儿子早已遇害的消息。"
-            hide sok with dissolve
+            hide sok_info with dissolve
             jump suspect_info
         "返回":
+            $ suspect_info_flag = 0
             jump main_menu_1
 
 # 审讯选择菜单
 label interrogation_menu:
-    scene background2 with fade
+    play music "<loop 0>AImusic6.mp3" fadein 2.0
+    scene empty_room with fade
     "请选择要审讯的嫌疑人:"
     menu:
         "提示: 在审讯过程中，你可以随时点击右上角\"返回主菜单\"按钮"

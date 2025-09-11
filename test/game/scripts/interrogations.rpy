@@ -7,8 +7,9 @@ label interrogate_monteff:
         jump main_menu_1
 
     show screen interrogation_controls
-
+    
     if monteff_asked == 0:
+        voice "audio/monteff_1.wav"
         monteff "（微微低头，声音轻柔）尊敬的侦探先生，请问您有什么需要我协助的吗？我会尽力配合您的调查。"
 
     scene empty_room with fade
@@ -40,19 +41,16 @@ label interrogate_monteff:
             renpy.say(monteff, clean_response)
 
     hide screen interrogation_controls with fade
-    $ narration_queue = [
-        "侦探先生，如果您没有其他问题，请允许我回去休息了。这一切让我感到非常不适。"
-    ]
-    python:
-        character_saying("video/monteff_leaving.webm", monteff)
-
-    pause(1.5)
-    show monteff:
-        easeout 1.0 xoffset 2000
-    with dissolve
-    pause 3.0
     
+    hide monteff
+    voice "audio/monteff_2.wav"
+    monteff "侦探先生，如果您没有其他问题，请允许我回去休息了。这一切让我感到非常不适。"
+    
+    show expression Movie(play="video/monteff_leaving.webm", loop=False, size=(1920, 1080)) as movie
+    with fade
     "蒙特夫太太优雅地离开了审讯室。"
+    stop movie
+    hide movie
 
     $ interrogated_suspects.add("monteff")
     jump main_menu_1
@@ -68,6 +66,7 @@ label interrogate_hoffman:
     show screen interrogation_controls
 
     if hoffman_asked == 0:
+        voice "audio/hoffman_1.mp3"
         hoffman "（双手交叉）侦探先生，您随便问，但我只能回答您五个问题"
 
     scene empty_room with fade
@@ -100,16 +99,15 @@ label interrogate_hoffman:
 
     hide screen interrogation_controls with fade
     hide hoffman
-    $ narration_queue = [
-        "好了，侦探先生，我对这些感到厌烦了，我相信我们都需要休息一下"
-    ]
-    python:
-        character_saying("video/hoffman_standing.webm", hoffman)
+    voice "audio/hoffman_2.mp3"
+    hoffman "好了，侦探先生，我对这些感到厌烦了，我相信我们都需要休息一下"
+    # pause 3.0
     
-    # 霍夫曼离开
-    $ renpy.movie_cutscene("video/hoffman_leaving.webm")
-    
+    show expression Movie(play="video/hoffman_leaving.webm", loop=False, size=(1920, 1080)) as movie
+    with fade
     "霍夫曼离开了审讯室。"
+    stop movie
+    hide movie
 
     $ interrogated_suspects.add("hoffman")
     jump main_menu_1
@@ -126,6 +124,7 @@ label interrogate_kremtanivsky:
     show screen interrogation_controls
 
     if kremtanivsky_asked == 0:
+        voice "audio/krem_1.mp3"
         kremtanivsky "（双手抱胸，微微仰头）侦探同志，请抓紧时间。苏联警察机关有严格的纪律，我不会隐瞒任何事实。"
 
     scene empty_room with fade
@@ -152,24 +151,21 @@ label interrogate_kremtanivsky:
             narration_queue = [clean_response]
             # 展示对应情绪图片
             renpy.hide("kremtanivsky")
-            renpy.show(kremtanivsky_states[current_emotion], at_list=[center], tag="kremtanivsky")
+            renpy.show(kremtanivsky_states[current_emotion], at_list=[center], tag="krem")
             renpy.with_statement(dissolve)
             renpy.say(kremtanivsky, clean_response)
 
     hide screen interrogation_controls with fade
-    $ narration_queue = [
-        "侦探同志，如果调查结束，我建议你关注真正的威胁，而不是在我这里浪费时间。"
-    ]
-    python:
-        character_saying("video/kremtanivsky_leaving.webm", kremtanivsky)
+    show krem idle
     
-    pause(1.5)
-    show krem:
-        easeout 1.0 xoffset 2000
-    with dissolve
-    pause 3.0
-    
+    kremtanivsky "侦探同志，如果调查结束，我建议你关注真正的威胁，而不是在我这里浪费时间。"
+
+    hide krem
+    show expression Movie(play="video/krem_leaving.webm", loop=False, size=(1920, 1080)) as movie
+    with fade
     "克里姆塔涅夫斯基大步离开了审讯室。"
+    stop movie
+    hide movie
 
     $ interrogated_suspects.add("kremtanivsky")
     jump main_menu_1
@@ -185,6 +181,7 @@ label interrogate_john:
     show screen interrogation_controls
 
     if john_asked == 0:
+        voice "audio/john_1.mp3"
         john "（不耐烦地看着手表）侦探先生，我时间有限，请您尽快。我还有军务要处理。"
 
     scene empty_room with fade
@@ -216,22 +213,21 @@ label interrogate_john:
             renpy.say(john, clean_response)
 
     hide screen interrogation_controls with fade
-    $ narration_queue = [
-        "侦探先生，如果您没有确凿证据，请不要再浪费我的时间。我还有更重要的事情要处理。"
-    ]
-    python:
-        character_saying("video/john_leaving.webm", john)
-
-    pause(1.5)
-    show john:
-        easeout 1.0 xoffset 2000
-    with dissolve
-    pause 3.0
     
+    show john idle
+    john "侦探先生，如果您没有确凿证据，请不要再浪费我的时间。我还有更重要的事情要处理。"
+    # pause 3.0
+
+    hide john
+    show expression Movie(play="video/john_leaving.webm", loop=False, size=(1920, 1080)) as movie
+    with fade
     "约翰上校头也不回地离开了审讯室。"
+    stop movie
+    hide movie
 
     $ interrogated_suspects.add("john")
     jump main_menu_1
+
 
 label interrogate_sok:
 
@@ -244,7 +240,8 @@ label interrogate_sok:
     show screen interrogation_controls
 
     if sok_asked == 0:
-        sok "（叹气）侦探先生，我只是个普通商人，来这里做生意的。请问您有什么需要了解的？"
+        voice "audio/sok_1.mp3"
+        sok "侦探先生，我只是个普通商人，来这里做生意的。请问您有什么需要了解的？"
 
     scene empty_room with fade
     show sok idle at center with dissolve
@@ -275,19 +272,17 @@ label interrogate_sok:
             renpy.say(sok, clean_response)
 
     hide screen interrogation_controls with fade
-    $ narration_queue = [
-        "侦探先生，如果您没有其他问题，请允许我回去休息了。这趟旅程让我感到非常疲惫。"
-    ]
-    python:
-        character_saying("video/sok_leaving.webm", sok)
+
+    show sok idle
+    voice "audio/sok_2.mp3"
+    sok "侦探先生，如果您没有其他问题，请允许我回去休息了。这趟旅程让我感到非常疲惫。"
     
-    pause(1.5)
-    show sok:
-        easeout 1.0 xoffset 2000
-    with dissolve
-    pause 3.0
-    
-    "苏和华微微鞠躬后离开了审讯室。"
+    hide sok
+    show expression Movie(play="video/sok_leaving.webm", loop=False, size=(1920, 1080)) as movie
+    with fade
+    "苏和华离开了审讯室。"
+    stop movie
+    hide movie
 
     $ interrogated_suspects.add("sok")
     jump main_menu_1

@@ -113,8 +113,7 @@ define config.window_show_transition = Dissolve(.2)
 define config.window_hide_transition = Dissolve(.2)
 
 # === 设置禁止滚轮回滚 ===
-# 暂时启用
-define config.rollback_enabled = True
+define config.rollback_enabled = False
 
 
 ## 默认设置 ########################################################################

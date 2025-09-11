@@ -1,4 +1,5 @@
 label ending_monteff:
+    play music "<loop 0>endings_bgm1.mp3"
     scene empty_room with fade
     show monteff at center with dissolve
 
@@ -6,8 +7,12 @@ label ending_monteff:
     
     monteff "（低头沉默片刻，然后抬头）是的...我承认我想杀他。但事实并非完全如你所想..."
     
+    hide monteff with dissolve
+
     "凭着掉落在现场的蒙特夫太太的散落日记以及她的口述，你逐渐理清数年前发生的那场惨案。"
     
+    scene endings_1 with fade
+
     "1935年的那个夏夜，莱姆尼安为偿还高额信贷，向在莱茵河畔罗霍姆的一间别墅中聚会的孩子们的饮料中倒入过量的安眠药，并在他们昏迷时将其绑架——这其中就有蒙特夫太太的女儿黛西。"
     
     "最初他只是想要15万英镑的赎金，可不知从何而来的威胁信却轰开了他的家门。惊恐害怕的莱姆尼安害怕遭到报复，日夜辗转反侧后终于作出了撕票的决定。"
@@ -15,27 +20,39 @@ label ending_monteff:
     "他将黛西带到附近的荒山上，掏出左轮向她连开六枪，这位可怜的女孩倒在了满是血迹的草丛中。"
     
     "看到倒在血泊中毫无生气的女儿，蒙特夫太太当即昏厥在地上。三个月后，丈夫因为受不了突如其来的打击，从公寓楼顶一跃而下；母亲的哮喘愈发严重，终于也在一个安静的冬夜中与世长辞。"
+
+    scene empty_room with fade
+    show monteff at center with dissolve
     
     monteff "为了施行报复，我只身登上这趟列车，准备与幕后凶手莱姆尼安同归于尽。但是...我还没来得及动手..."
     
     calgary "什么？您是说..."
     
+    hide monteff with dissolve
+
     "亲爱的侦探，您或许忘记了一件事——蒙特夫太太真的携带有枪支吗？"
+
+    scene hoffman_gun with fade
     
     "人们总以为自己满腔热血，实则终归只是执棋人手下一枚无关紧要的兵卒。真正的幕后主使？——霍夫曼议员，为了实现自己的野心，运用其它四人的弱点和矛盾，精心策划了一场联合狩猎的戏码。"
     
     "而蒙特夫太太，和其它三人一样，也仅仅是被利用和伪装成凶手的无名小卒而已。"
+
+    scene calgary_smoke with fade
     
     "你做出了错误的指控，真凶顺利逍遥法外……"
     
-    hide monteff with dissolve
     jump finish
 
 label ending_hoffman:
+    play music "<from 4>endings_bgm2.mp3"
     scene empty_room with fade
     show hoffman at center with dissolve
     
     calgary "在我严丝合缝的缜密推理下，我终于认定您就是这一切的幕后主使和作案凶手，霍夫曼先生。"
+
+    hide hoffman with dissolve
+    scene hoffman_debate with fade
     
     hoffman "（轻笑一声，慢慢整理领带）莱姆尼安为什么会死？很简单，因为太多人想让他死了。"
     
@@ -58,9 +75,16 @@ label ending_hoffman:
             jump ending_public
 
 label ending2_final:
+
+    scene empty_room with fade
+    show hoffman at center with dissolve
+
     calgary "无论您的理由多么冠冕堂皇，谋杀就是谋杀，我必须将您绳之以法。"
     
     hoffman "（冷笑）那么，祝您好运，侦探先生。您会发现自己对抗的不只是我一个人。"
+
+    hide hoffman with dissolve
+    scene calgary_court with fade
     
     "你坚持将霍夫曼议员移交警方，但在战争阴云笼罩的前夜，法律的秩序已然崩坏。"
     
@@ -74,12 +98,15 @@ label ending2_final:
     jump finish
 
 label ending_kremtanivsky:
+    play music "<loop 0>endings_bgm1.mp3"
     scene empty_room with fade
-    show kremtanivsky at center with dissolve
+    show krem idle at center with dissolve
     
     calgary "依据货箱里运送的那一批左轮手枪，以及手枪上明显属于您的指纹，而当我再想起您先前那些自相矛盾的话语，我几乎可以断定您就是伪装起来的真凶，克里姆塔涅夫斯基先生。"
     
     kremtanivsky "（愤怒地）这是诬陷！我为什么要杀他？只有把他活着带回苏联，我才有自证清白的机会！"
+
+    hide krem with dissolve
     
     "事情的'原委'，也因你的推断而逐渐水落石出。"
     
@@ -94,17 +121,21 @@ label ending_kremtanivsky:
     "看起来作案动机已然无比清晰。可是，事实果真如此吗？"
     
     "亲爱的侦探，您或许忘记了一件事——只有把莱姆尼安活着带回苏联，克里姆才有自证清白的机会。他又有什么理由能让莱姆尼安如此命丧列车呢？"
+
+    scene hoffman_gun with fade
     
     "人们总以为自己满腔热血，实则终归只是执棋人手下一枚无关紧要的兵卒。真正的幕后主使？——霍夫曼议员，为了实现自己的野心，运用其它四人的弱点和矛盾，精心策划了一场联合狩猎的戏码。"
     
     "而克里姆塔涅夫，和其它三人一样，也仅仅是被利用和伪装成凶手的无名小卒而已。"
+
+    scene calgary_smoke with fade
     
     "你做出了错误的指控，真凶顺利逍遥法外……"
     
-    hide kremtanivsky with dissolve
     jump finish
 
 label ending_john:
+    play music "<loop 0>endings_bgm1.mp3"
     scene empty_room with fade
     show john at center with dissolve
     
@@ -113,6 +144,8 @@ label ending_john:
     calgary "而这十余年的军事背景有理由让我怀疑您有能力处理掉任意一位潜在的'威胁'，而这位已经倒在血泊中的威胁，曾是你一家的梦魇。"
     
     john "（面色阴沉）是的，我恨他，我确实想杀他。但我还没来得及动手..."
+
+    hide john with dissolve
     
     "仅仅在五年前，约翰一家还是一个幸福而美满的家庭。儿子如他所愿进入军官学校读书，妻子成为舞会靓丽的明星，而他也从远方的印度归来，和家人团聚。"
     
@@ -122,28 +155,37 @@ label ending_john:
     
     "悲痛欲绝的约翰在焦土上发现了遗落的莱姆尼安雇佣军勋章，他以此上诉法庭，寄希望于国际法院让这群残暴的野兽付出代价。"
     
-    "可执法院惧怕德国法西斯，不愿与其产生矛盾，在接受4600万马克的赔偿金后竟然只判处了战犯首领2年监禁。"
+    "可执法院惧怕德国法西斯，不愿与其产生矛盾，在接受4600万马克的赔偿金后竟然只判处了战犯首领2年监禁。"\
+
+    show john with dissolve
     
     john "我确实准备了神经毒素，准备在莱姆尼安饮酒时下毒，使他陷入永久的沉眠。可还未来得及施行计划，我就得到了莱姆尼安的死讯，同时我的防身手枪也不翼而飞。"
     
     "作为一位训练有素的军人，约翰准备的本是神经毒素，准备在莱姆尼安饮酒时下毒。可还未来得及施行计划，约翰就得到了莱姆尼安的死讯，同时他的防身手枪也不翼而飞。"
+
+    hide john with dissolve
+    scene hoffman_gun with fade
     
     "人们总以为自己满腔热血，实则终归只是执棋人手下一枚无关紧要的兵卒。真正的幕后主使？——霍夫曼议员，为了实现自己的野心，运用其它四人的弱点和矛盾，精心策划了一场联合狩猎的戏码。"
     
     "这把杀害莱姆尼安的手枪，正是霍夫曼捡到的，约翰的防身手枪。而约翰上校，和其它三人一样，也仅仅是被利用和伪装成凶手的无名小卒而已。"
-    
+
+    scene calgary_smoke with fade
+
     "你做出了错误的指控，真凶顺利逍遥法外……"
-    
-    hide john with dissolve
+
     jump finish
 
 label ending_sok:
+    play music "<loop 0>endings_bgm1.mp3"
     scene empty_room with fade
     show sok at center with dissolve
     
     calgary "苏和华先生，您无法拿出不在场证明，您所作出的种种常人无法解释的怪异行为，皆是为您的行凶行为作掩饰。"
     
     sok "（苦笑）侦探先生，我确实想报仇，但我没有机会..."
+
+    hide sok with dissolve
     
     "你拿出断续拼凑的电报，尝试复原出这一切的真相："
     
@@ -170,6 +212,7 @@ label ending_sok:
             jump ending7
     
 label ending6_1:
+    scene calgary_smoke with fade
     "你被霍夫曼的宏伟计划所打动，也深知他所描述的社会现状的悲哀。在规则缺失的乱世里，法律和规章早已失去了保护公民的能力。"
     
     "若如今的法律果真还能保护公民，那么为何苏和华在报案后苦苦等待十二年，等来的却是儿子的死讯？"
@@ -177,6 +220,8 @@ label ending6_1:
     "若如今的法律果真还能保护公民，那么为何蒙特夫家族身为豪门贵族，仍然免不了家破人亡的命运？"
     
     "他说，在法律缺失的世界里，正义便只能通过私刑来实现。而当私刑也无法伸张正义时，便只有通过战争重塑世界的规则和正义。"
+    
+    scene endings_6_1
     
     "霍夫曼回到了家乡。战争如期打响了，新的秩序在血肉、亡尸和废墟中缓缓建立。"
     
@@ -187,8 +232,13 @@ label ending6_1:
     jump finish
 
 label ending_public:
+    
+    scene calgary_smoke with fade
+    
     "你决定将真相公之于众，不顾霍夫曼的威胁。"
     
+    scene calgary_court with fade
+
     "你在布鲁塞尔下了车，直奔国际联盟，请求国际法庭以保护弱国公民的名义彻底调查此事。"
     
     "然而，战争阴云笼罩的前夜，法律的秩序已然崩坏，规则不过是权贵玩弄人心的棋子，莱姆尼安的死不过是落入大海的石子激起的小小水花，再也没了一点波澜。"
@@ -200,10 +250,15 @@ label ending_public:
     jump finish
 
 label ending7:
+
+    scene calgary_smoke with fade
+
     "你认为在座的五人均无完整的作案动机，真正的凶手或许已经潜逃，或者——从一开始就不在这辆驶向地狱的雪夜列车上。"
     
     "而车上的一具具人身，终归不过是幕后主使用以娱乐的提线木偶。"
     
+    scene calgary_court with fade
+
     "你请求提级调查。"
     
     "你在布鲁塞尔下了车，直奔国际联盟，请求国际法庭以保护弱国公民的名义彻底调查此事。"
